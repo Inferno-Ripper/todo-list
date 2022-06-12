@@ -8,6 +8,9 @@ import { changeTheTheme, selectTheme } from './features/darkModeSlice';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import AddTodo from './components/AddTodo';
+import Todo from './components/Todo';
+import TodosInfo from './components/TodosInfo';
+import TodosSort from './components/TodosSort';
 
 function App() {
 	const [themeIcon, setThemeIcon] = useState(LightModeIcon);
@@ -27,16 +30,56 @@ function App() {
 			<div className='App__themeIcon' onClick={changeTheme}>
 				{/* IF darkMode is True display the  LightModeIcon ELSE display the DarkModeIcon*/}
 				{darkMode ? (
-					<LightModeIcon style={{ color: 'white', fontSize: '40px' }} />
+					<LightModeIcon style={{ color: 'white' }} />
 				) : (
-					<DarkModeIcon style={{ color: 'black', fontSize: '40px' }} />
+					<DarkModeIcon style={{ color: 'black' }} />
 				)}
 			</div>
 
 			<h1 className='App__todoListText'>Todo List</h1>
 
-			<div className='App__todos'>
-				<AddTodo />
+			{/* todos */}
+			<div className='App__content'>
+				{/* add a new todo */}
+				<div>
+					<AddTodo />
+				</div>
+
+				{/* todo list */}
+				<div
+					className={`${
+						darkMode ? 'dark-App__todoList' : 'light-App__todoList'
+					} App__todoList`}
+				>
+					<div className='App__todos'>
+						<Todo />
+						<Todo />
+						<Todo />
+						<Todo />
+						<Todo />
+						<Todo />
+						<Todo />
+						<Todo />
+						<Todo />
+						<Todo />
+						<Todo />
+						<Todo />
+						<Todo />
+						<Todo />
+						<Todo />
+						<Todo />
+						<Todo />
+						<Todo />
+						<Todo />
+						<Todo />
+					</div>
+
+					{/* todo info */}
+					<TodosInfo className='App__todosInfo' />
+				</div>
+
+				{/* todo sort */}
+				<TodosSort />
 			</div>
 		</div>
 	);
