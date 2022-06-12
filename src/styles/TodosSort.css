@@ -1,0 +1,46 @@
+.todosSort {
+	display: flex;
+	align-items: center;
+	justify-content: space-evenly;
+	width: 100%;
+	height: 70px;
+	border-radius: 7px;
+}
+
+.dark-todosSort {
+	background-color: #222836;
+}
+
+.light-todosSort {
+	background-color: white;
+}
+
+.todosSort p {
+	cursor: pointer;
+	color: #51536c;
+	font-size: 20px;
+	font-weight: 600;
+}
+
+.todosSort p:hover,
+.todosSort__seleted {
+	color: #3d62ba !important;
+}
+
+@media (min-width: 768px) {
+	.todosSort {
+		gap: 20px;
+	}
+}
+
+@media (min-width: 1024px) {
+	.todosSort p {
+		font-size: 16px;
+	}
+}
+
+@media (min-width: 1280px) {
+	.todosSort {
+		gap: 50px;
+	}
+}

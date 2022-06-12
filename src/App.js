@@ -24,6 +24,8 @@ function App() {
 		dispatch(changeTheTheme(darkMode === true ? false : true));
 	};
 
+	const mediaMatch = window.matchMedia('(min-width: 500px)');
+
 	return (
 		// IF the theme is set to dark then give the div dark-App className ELSE give the div light-App className
 		<div className={`${darkMode ? 'dark-App' : 'light-App'} App`}>
@@ -75,11 +77,13 @@ function App() {
 					</div>
 
 					{/* todo info */}
-					<TodosInfo className='App__todosInfo' />
+					<TodosInfo />
 				</div>
 
 				{/* todo sort */}
-				<TodosSort />
+				<div className='App__todosInfo'>
+					<TodosSort />
+				</div>
 			</div>
 		</div>
 	);

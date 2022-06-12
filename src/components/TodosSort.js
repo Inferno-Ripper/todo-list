@@ -1,8 +1,20 @@
 import React from 'react';
-import '../styles/TodoSort.css';
+import { useSelector } from 'react-redux';
+import { selectTheme } from '../features/darkModeSlice';
+import '../styles/TodosSort.css';
 
 const TodosSort = () => {
-	return <div className='todosSort'>TodoSort</div>;
+	const darkMode = useSelector(selectTheme);
+
+	return (
+		<div
+			className={`${darkMode ? 'dark-todosSort' : 'light-todosSort'} todosSort`}
+		>
+			<p className='todosSort__all todosSort__seleted'>All</p>
+			<p className='todosSort__active'>Active</p>
+			<p className='todosSort__completed'>Completed</p>
+		</div>
+	);
 };
 
 export default TodosSort;

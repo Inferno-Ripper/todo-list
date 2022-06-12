@@ -12,6 +12,10 @@
 	background-color: #1b1f2a;
 }
 
+.light-todo:hover {
+	background-color: #f4f4f4;
+}
+
 .dark-todo:not(:last-child) {
 	border-bottom: 1px solid #2f3146;
 }
@@ -81,7 +85,7 @@
 	border: 1px solid #545563;
 }
 
-.dark-todo__completedCircle:hover {
+.todo:hover .dark-todo__completedCircle {
 	background-color: #545563;
 }
 
@@ -90,8 +94,8 @@
 	border: 1px solid #dcdbdb;
 }
 
-.light-todo__completedCircle:hover {
-	background-color: #222836;
+.todo:hover .light-todo__completedCircle {
+	background-color: #545563;
 }
 
 .dark-todo__completedCircle .MuiSvgIcon-root {
@@ -99,16 +103,27 @@
 	font-size: 25px;
 }
 
-.dark-todo__completedCircle:hover .MuiSvgIcon-root {
+.todo:hover .dark-todo__completedCircle .MuiSvgIcon-root {
 	color: black;
 	font-size: 25px;
 }
 
-.light-todo__completedCircle:hover .MuiSvgIcon-root {
+.todo:hover .light-todo__completedCircle .MuiSvgIcon-root {
 	color: white;
-	font-size: 25px;
 }
 
-.light-todo__completedCircle .MuiSvgIcon-root {
+.dark-todo__completed {
+	background-color: white;
+}
+
+.dark-todo__completed .MuiSvgIcon-root {
 	color: black;
+}
+
+.light-todo__completed {
+	background-color: black;
+}
+
+.light-todo__completed .MuiSvgIcon-root {
+	color: white;
 }

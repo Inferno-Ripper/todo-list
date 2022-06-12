@@ -40,6 +40,10 @@
 	left: 20px;
 	letter-spacing: 5px;
 	text-transform: uppercase;
+	cursor: pointer;
+}
+.App__todoListText:hover {
+	color: #3d62ba;
 }
 
 /* todos */
@@ -53,7 +57,7 @@
 	position: relative;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
 	.App__content {
 		width: 50vw;
 		margin-top: -50px;
@@ -68,9 +72,9 @@
 	border-radius: 7px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
 	.App__todos {
-		height: 52vh;
+		height: 63vh;
 		overflow: scroll;
 		border-radius: 7px;
 	}
@@ -103,3 +107,9 @@
 }
 
 /* todos info */
+
+@media (min-width: 1024px) {
+	.App__todosInfo {
+		display: none;
+	}
+}

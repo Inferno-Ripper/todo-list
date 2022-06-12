@@ -30,7 +30,11 @@ const Todo = () => {
 						darkMode
 							? 'dark-todo__completedCircle'
 							: 'light-todo__completedCircle'
-					} todo__completedCircle`}
+					} todo__completedCircle ${
+						isCompleted && darkMode
+							? 'dark-todo__completed'
+							: isCompleted && 'light-todo__completed'
+					} todo__completed`}
 				>
 					{isCompleted && <DoneIcon className='todo__completed' />}
 				</div>

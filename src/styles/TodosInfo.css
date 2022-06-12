@@ -1,7 +1,7 @@
 .todosInfo {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: space-around;
 	height: 70px;
 	position: sticky;
 	width: 100%;
@@ -13,7 +13,7 @@
 .dark-todosInfo {
 	background-color: #222836;
 	border-top: 1px solid #2f3146;
-	color: #5b5d76;
+	color: #51536c;
 }
 
 .light-todosInfo {
@@ -27,10 +27,27 @@
 	cursor: pointer;
 }
 
-.todosInfo__left {
-	padding-left: 30px;
+/* .todosInfo__left {
+	padding-left: 10px;
 }
 
 .todosInfo__right {
-	padding-right: 30px;
+	padding-right: 10px;
+} */
+
+.todosInfo__todosSort {
+}
+
+@media (max-width: 1024px) {
+	/* .todosInfo__left {
+		padding-left: 30px;
+	}
+
+	.todosInfo__right {
+		padding-right: 30px;
+	} */
+
+	.todosInfo__todosSort {
+		display: none !important;
+	}
 }
