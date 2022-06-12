@@ -7,6 +7,7 @@ import { changeTheTheme, selectTheme } from './features/darkModeSlice';
 // icons
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
+import AddTodo from './components/AddTodo';
 
 function App() {
 	const [themeIcon, setThemeIcon] = useState(LightModeIcon);
@@ -33,6 +34,10 @@ function App() {
 			</div>
 
 			<h1 className='App__todoListText'>Todo List</h1>
+
+			<div className='App__todos'>
+				<AddTodo />
+			</div>
 		</div>
 	);
 }

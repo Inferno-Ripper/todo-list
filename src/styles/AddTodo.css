@@ -1,0 +1,51 @@
+.addTodo {
+	margin-top: 50px;
+}
+
+.addTodo__form {
+	display: flex;
+	align-items: center;
+	padding: 0 5px;
+	border-radius: 7px;
+}
+
+.addTodo__input {
+	background: transparent;
+	width: 100%;
+	height: 50px;
+	outline: none;
+	border: none;
+	font-size: 20px;
+	padding: 0 15px;
+}
+
+.dark-addTodo__form {
+	background-color: #222836;
+	color: white;
+}
+
+.dark-addTodo__form > .addTodo__input {
+	color: white;
+}
+
+.light-addTodo__form {
+	background-color: #fefefe;
+	color: black;
+}
+
+.addTodo__form .MuiSvgIcon-root {
+	font-size: 40px;
+	cursor: pointer;
+}
+
+.dark-addTodo__form .MuiSvgIcon-root {
+	color: white;
+}
+
+.light-addTodo__form .MuiSvgIcon-root {
+	color: #222836;
+}
+
+.addTodo__button {
+	display: none;
+}
