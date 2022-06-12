@@ -1,0 +1,34 @@
+.App {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+	width: 100vw;
+	position: relative;
+	transition: all 0.5s ease-in-out;
+}
+
+.dark-App {
+	background-color: #151820;
+	color: white;
+}
+
+.light-App {
+	background-color: white;
+	color: black;
+}
+
+.App__themeIcon {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	cursor: pointer;
+}
+
+.App__todoListText {
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	letter-spacing: 5px;
+	text-transform: uppercase;
+}
