@@ -1,0 +1,176 @@
+.modal {
+	position: fixed;
+	width: 80vw;
+	height: 81vh;
+	top: 10%;
+	left: 7%;
+	z-index: 999;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 20px;
+	border-radius: 7px;
+}
+
+@media (min-width: 1024px) {
+	.modal {
+		width: 50vw;
+		top: 10%;
+		left: 25%;
+	}
+}
+
+.dark-modal {
+	background-color: #1b1f2a;
+	border: 1px solid #2f3146;
+}
+
+.light-modal {
+	box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+	background-color: white;
+	border: 1px solid #dcdbdb;
+}
+
+.modalHeader {
+	display: grid;
+	justify-content: space-between;
+	width: 100%;
+	row-gap: 50px;
+	grid-template-areas:
+		'modalStatus modalCloseBtn'
+		'modalBody modalBody';
+}
+
+.modalStatus {
+	grid-area: modalStatus;
+}
+
+.modalCloseBtn {
+	grid-area: modalCloseBtn;
+	justify-self: end;
+	cursor: pointer;
+	border-radius: 50%;
+	width: 50px;
+	height: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 25px;
+	transition: background-color 250ms ease-in-out;
+}
+
+.dark-modal .modalCloseBtn {
+	color: white;
+}
+
+.light-modal .modalCloseBtn {
+	color: black;
+}
+
+.modalCloseBtn:hover {
+	background-color: rgb(138, 5, 5);
+	color: white;
+}
+
+.modal__muiBtn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.modal__muiBtn:hover {
+	background-color: rgb(138, 5, 5) !important;
+}
+
+.modalBody {
+	grid-area: modalBody;
+}
+
+.modalBodyText {
+	font-size: 25px;
+	overflow: scroll;
+	width: 100%;
+	height: 60vh;
+}
+
+.modalFooter {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+}
+
+.modalBtn {
+	height: 40px;
+	width: 400px;
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 20px;
+	border-radius: 7px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: all 250ms ease-in-out;
+}
+
+.dark-modalBtn {
+	background-color: #222836;
+	border: 1px solid #2f3146;
+	color: white;
+}
+
+.light-modalBtn {
+	background-color: white;
+	border: 1px solid #dcdbdb;
+	color: black;
+}
+
+.modalCompleteBtn:hover {
+	background-color: #3d62ba;
+	color: white;
+}
+
+.modalDeleteBtn:hover {
+	background-color: rgb(138, 5, 5);
+	color: white;
+}
+
+.hide__modal {
+	z-index: -1;
+	opacity: 0;
+	animation: hide 0.25s;
+	transform: scale(0);
+}
+
+@keyframes hide {
+	from {
+		z-index: 999;
+		transform: scale(1);
+		opacity: 1;
+	}
+	to {
+		z-index: -1;
+		transform: scale(0);
+		opacity: 0;
+	}
+}
+
+.show__modal {
+	z-index: 999;
+	opacity: 1;
+	animation: show 0.25s;
+	transform: scale(1);
+}
+
+@keyframes show {
+	from {
+		z-index: -1;
+		transform: scale(0);
+		opacity: 0;
+	}
+	to {
+		z-index: 999;
+		transform: scale(1);
+		opacity: 1;
+	}
+}

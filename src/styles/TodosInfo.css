@@ -27,26 +27,7 @@
 	cursor: pointer;
 }
 
-/* .todosInfo__left {
-	padding-left: 10px;
-}
-
-.todosInfo__right {
-	padding-right: 10px;
-} */
-
-.todosInfo__todosSort {
-}
-
 @media (max-width: 1024px) {
-	/* .todosInfo__left {
-		padding-left: 30px;
-	}
-
-	.todosInfo__right {
-		padding-right: 30px;
-	} */
-
 	.todosInfo__todosSort {
 		display: none !important;
 	}

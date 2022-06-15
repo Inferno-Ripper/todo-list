@@ -19,18 +19,21 @@
 	color: black;
 }
 
-.App__themeIcon {
-	position: absolute;
+.App__topRight {
+	position: fixed;
 	top: 20px;
 	right: 20px;
+	display: flex;
+	align-items: center;
+	gap: 50px;
+}
+
+.App__topRight .MuiSvgIcon-root {
+	font-size: 40px;
 	cursor: pointer;
 }
 
-.App__themeIcon .MuiSvgIcon-root {
-	font-size: 40px;
-}
-
-.App__themeIcon .MuiSvgIcon-root:hover {
+.App__topRight .MuiSvgIcon-root:hover {
 	color: #3d62ba !important;
 }
 
@@ -67,28 +70,27 @@
 /* todos list */
 
 .App__todos {
-	height: 48vh;
+	height: auto;
+	max-height: 48vh;
 	overflow: scroll;
 	border-radius: 7px;
+	z-index: 10 !important;
 }
 
 @media (min-width: 1024px) {
 	.App__todos {
-		height: 63vh;
+		max-height: 63vh;
 		overflow: scroll;
 		border-radius: 7px;
 	}
 }
 
-/* Hide scrollbar for Chrome, Safari and Opera */
-.App__todos::-webkit-scrollbar {
-	display: none;
+.dark-App__todo:not(:last-child) {
+	border-bottom: 1px solid #2f3146;
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
-.App__todos {
-	-ms-overflow-style: none; /* IE and Edge */
-	scrollbar-width: none; /* Firefox */
+.light-App__todo:not(:last-child) {
+	border-bottom: 1px solid #dcdbdb;
 }
 
 .App__todoList {

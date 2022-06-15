@@ -1,13 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../features/darkModeSlice';
 import '../styles/AddTodo.css';
-
 // icons
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
-const AddTodo = () => {
+const AddTodo = ({ todos, setTodos }) => {
+	const [newTodo, setNewTodo] = useState('');
+
 	const darkMode = useSelector(selectTheme);
+
+	const addNewTodo = (e) => {
+		e.preventDefault();
+
+		// IF input is empty Then don't add a todo
+		if (!newTodo) return;
+
+		setTodos((prevValue) => [
+			...prevValue,
+			{ bodyText: newTodo, completeStatus: false, todoId: '124' },
+		]);
+
+		setNewTodo('');
+	};
 
 	return (
 		<div className='addTodo'>
@@ -16,11 +31,15 @@ const AddTodo = () => {
 					darkMode ? 'dark-addTodo__form' : 'light-addTodo__form'
 				} addTodo__form`}
 			>
-				<input type='text' className='addTodo__input' />
-				<button type='submit' className='addTodo__button'>
+				<input
+					className='addTodo__input'
+					value={newTodo}
+					onChange={(e) => setNewTodo(e.currentTarget.value)}
+				/>
+				<button type='submit' onClick={addNewTodo} className='addTodo__button'>
 					Submit
 				</button>
-				<AddCircleIcon />
+				<AddCircleIcon onClick={addNewTodo} />
 			</form>
 		</div>
 	);

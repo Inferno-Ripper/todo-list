@@ -6,6 +6,8 @@
 	justify-content: space-between;
 	transition: all 250ms ease-in-out;
 	cursor: pointer;
+	overflow: hidden;
+	z-index: 10;
 }
 
 .dark-todo:hover {
@@ -16,16 +18,29 @@
 	background-color: #f4f4f4;
 }
 
-.dark-todo:not(:last-child) {
-	border-bottom: 1px solid #2f3146;
-}
-
-.light-todo:not(:last-child) {
-	border-bottom: 1px solid #dcdbdb;
-}
-
 .todo__text {
 	font-size: 25px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 50vw;
+}
+
+@media (min-width: 768px) {
+	.todo__text {
+		width: 60vw;
+	}
+}
+
+@media (min-width: 1024px) {
+	.todo__text {
+		width: 35vw;
+	}
+}
+@media (min-width: 1280px) {
+	.todo__text {
+		width: 38vw;
+	}
 }
 
 /* stops user from selecting text */
@@ -51,6 +66,12 @@
 	padding-left: 10px;
 }
 
+.todo__rightIcons {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+}
+
 .todo__delete {
 	padding-right: 10px;
 	font-size: 30px !important;
@@ -68,6 +89,10 @@
 
 .todo__delete:hover {
 	color: red !important;
+}
+
+.todo__expandIcon:hover {
+	color: #3d62ba;
 }
 
 .todo__completedCircle {
