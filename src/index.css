@@ -30,3 +30,7 @@ code {
 	-ms-overflow-style: none; /* IE and Edge */
 	scrollbar-width: none; /* Firefox */
 }
+
+.MuiSvgIcon-root {
+	transition: all 250ms ease-in-out !important;
+}

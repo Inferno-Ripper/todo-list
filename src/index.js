@@ -9,9 +9,10 @@ import { Provider } from 'react-redux';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-	<React.StrictMode>
-		<Provider store={store}>
-			<App />
-		</Provider>
-	</React.StrictMode>
+	// react strict mode disabled because it causes the the drag and drop feature to not work properly
+	// <React.StrictMode>
+	<Provider store={store}>
+		<App />
+	</Provider>
+	// </React.StrictMode>
 );

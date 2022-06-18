@@ -3,7 +3,7 @@ import '../styles/Todo.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectTheme } from '../features/darkModeSlice';
 import Modal from './Modal';
-import { setModalData } from '../features/modalSlice';
+import { seletIsModalOpen, setModalData } from '../features/modalSlice';
 import { Fade } from 'react-reveal';
 // icons
 import DoneIcon from '@mui/icons-material/Done';
@@ -13,9 +13,9 @@ import EditIcon from '@mui/icons-material/Edit';
 
 const Todo = ({ text }) => {
 	const [isDone, setIsDone] = useState(false);
-	const [openTheModal, setOpenTheModal] = useState(false);
 
 	const darkMode = useSelector(selectTheme);
+	const isModalOpen = useSelector(seletIsModalOpen);
 
 	const dispatch = useDispatch();
 
@@ -26,7 +26,6 @@ const Todo = ({ text }) => {
 	};
 
 	const openModal = () => {
-		setOpenTheModal(true);
 		dispatch(
 			setModalData({
 				bodyText: text,
@@ -54,6 +53,7 @@ const Todo = ({ text }) => {
 						>
 							{isDone && <DoneIcon className='todo__done' />}
 						</div>
+
 						<p className={`${isDone && 'todo__doneText'} todo__text noselect`}>
 							{text}
 						</p>
@@ -75,8 +75,8 @@ const Todo = ({ text }) => {
 					</div>
 				</Fade>
 			</div>
-			{/* every time new todo is added modal would open and close on it's own. using conditional rendering to prevent that bug */}
-			{openTheModal && (
+
+			{isModalOpen && (
 				<Modal key={text} isDone={isDone} completeTodo={completeTodo} />
 			)}
 		</>

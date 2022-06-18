@@ -1,9 +1,9 @@
-import react, { useState } from 'react';
+import react, { useEffect, useState } from 'react';
 import './styles/App.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeTheTheme, selectTheme } from './features/darkModeSlice';
 import { Fade } from 'react-reveal';
-
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 // icons
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
@@ -12,6 +12,7 @@ import Todo from './components/Todo';
 import TodosInfo from './components/TodosInfo';
 import TodosSort from './components/TodosSort';
 import UserInfo from './components/UserInfo';
+import { seletIsModalOpen } from './features/modalSlice';
 
 function App() {
 	const [todos, setTodos] = useState([]);
@@ -19,11 +20,22 @@ function App() {
 	const dispatch = useDispatch();
 
 	const darkMode = useSelector(selectTheme);
+	const isModalOpen = useSelector(seletIsModalOpen);
 
 	const changeTheme = () => {
 		// IF darkmode is True set it to False ELSE set it to True
 		dispatch(changeTheTheme(darkMode === true ? false : true));
 	};
+
+	function handleOnDragEnd(result) {
+		if (!result.destination) return;
+
+		const items = Array.from(todos);
+		const [reorderedItem] = items.splice(result.source.index, 1);
+		items.splice(result.destination.index, 0, reorderedItem);
+
+		setTodos(items);
+	}
 
 	return (
 		// IF the theme is set to dark then give the div dark-App className ELSE give the div light-App className
@@ -59,19 +71,43 @@ function App() {
 							darkMode ? 'dark-App__todoList' : 'light-App__todoList'
 						} App__todoList`}
 					>
-						<div className='App__todos'>
-							{todos.map(({ bodyText }) => {
-								return (
+						<DragDropContext onDragEnd={handleOnDragEnd}>
+							<Droppable droppableId='Todos List'>
+								{(provided) => (
 									<div
-										className={`${
-											darkMode ? 'dark-App__todo' : 'light-App__todo'
-										} App__todo`}
+										className='App__todos'
+										{...provided.droppableProps}
+										ref={provided.innerRef}
 									>
-										<Todo text={bodyText} />
+										{todos.map(({ bodyText }, index) => {
+											return (
+												<Draggable
+													key={index}
+													index={index}
+													draggableId={`'${index}'`}
+													isDragDisabled={isModalOpen}
+												>
+													{(provided) => (
+														<div
+															{...provided.draggableProps}
+															{...provided.dragHandleProps}
+															ref={provided.innerRef}
+															className={`${
+																darkMode ? 'dark-App__todo' : 'light-App__todo'
+															} App__todo`}
+														>
+															<Todo text={bodyText} />
+														</div>
+													)}
+												</Draggable>
+											);
+										})}
+
+										{provided.placeholder}
 									</div>
-								);
-							})}
-						</div>
+								)}
+							</Droppable>
+						</DragDropContext>
 
 						{/* todo info */}
 						<TodosInfo />
