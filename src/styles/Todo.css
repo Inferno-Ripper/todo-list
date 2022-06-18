@@ -54,7 +54,7 @@
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
-.todo__completedText {
+.todo__doneText {
 	text-decoration: line-through;
 	color: gray;
 }
@@ -69,7 +69,7 @@
 .todo__rightIcons {
 	display: flex;
 	align-items: center;
-	gap: 20px;
+	gap: 10px;
 }
 
 .todo__delete {
@@ -88,10 +88,20 @@
 }
 
 .todo__delete:hover {
-	color: red !important;
+	color: rgb(138, 5, 5) !important;
 }
 
-.todo__expandIcon:hover {
+.todo__expandAndEditIcon {
+	/* display: none !important; */
+	opacity: 0;
+}
+
+.todo:hover .todo__expandAndEditIcon {
+	/* display: block !important; */
+	opacity: 1;
+}
+
+.todo__expandAndEditIcon:hover {
 	color: #3d62ba;
 }
 

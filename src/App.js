@@ -11,7 +11,7 @@ import AddTodo from './components/AddTodo';
 import Todo from './components/Todo';
 import TodosInfo from './components/TodosInfo';
 import TodosSort from './components/TodosSort';
-import PersonIcon from '@mui/icons-material/Person';
+import UserInfo from './components/UserInfo';
 
 function App() {
 	const [todos, setTodos] = useState([]);
@@ -39,7 +39,7 @@ function App() {
 				</div>
 
 				<div className='App__userInfo'>
-					<PersonIcon />
+					<UserInfo />
 				</div>
 			</div>
 

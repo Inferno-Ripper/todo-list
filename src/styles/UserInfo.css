@@ -1,0 +1,96 @@
+.userInfo {
+	display: flex;
+	flex-direction: column;
+	height: 50px;
+}
+
+.userInfo__list {
+	position: absolute;
+	top: 50px;
+	right: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: left;
+	border-radius: 7px;
+	display: none;
+	z-index: 10;
+}
+
+.userInfo:hover .userInfo__list,
+.userInfo__list:hover .userInfo__list {
+	display: flex;
+}
+
+.dark-userInfo__list {
+	background-color: #222836;
+}
+
+.light-userInfo__list {
+	background-color: #fefefe;
+}
+
+.userInfo__list p {
+	list-style: none;
+	height: 50px;
+	white-space: nowrap;
+	padding: 0 20px;
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.userInfo__list p:first-child {
+	border-top-left-radius: 7px;
+	border-top-right-radius: 7px;
+}
+
+.userInfo__list p:last-child {
+	border-bottom-left-radius: 7px;
+	border-bottom-right-radius: 7px;
+}
+
+.dark-userInfo__list p:hover {
+	background-color: #1b1f2a;
+	color: #3d62ba;
+}
+
+.light-userInfo__list p:hover {
+	background-color: #f4f4f4;
+}
+
+.dark-userInfo__list p:not(:last-child) {
+	border-bottom: 1px solid #2f3146;
+}
+
+.light-userInfo__list p:not(:last-child) {
+	border-bottom: 1px solid #dcdbdb;
+}
+
+.userInfo__upArrow {
+	width: 15px;
+	height: 15px;
+	position: absolute;
+	top: 44px;
+	right: 12px;
+	transform: rotate(45deg) !important;
+	opacity: 0;
+}
+
+.dark-userInfo > .userInfo__upArrow {
+	background-color: #151820;
+}
+
+.light-userInfo > .userInfo__upArrow {
+	background-color: #e8e8ec;
+}
+
+.dark-userInfo:hover > .userInfo__upArrow {
+	opacity: 1;
+	background-color: #222836;
+}
+
+.light-userInfo:hover > .userInfo__upArrow {
+	background-color: #fefefe;
+	opacity: 1;
+}

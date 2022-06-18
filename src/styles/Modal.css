@@ -41,8 +41,29 @@
 		'modalBody modalBody';
 }
 
+.modalHeader * {
+	transition: all 250ms ease-in-out;
+}
+
 .modalStatus {
 	grid-area: modalStatus;
+}
+
+.modalStatusBorder {
+	position: absolute;
+	top: 29px;
+	left: 12px;
+	height: 27px;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+.CompletedBorder {
+	border-left: 6px solid #3d62ba;
+}
+
+.NotCompletedBorder {
+	border-left: 6px solid rgb(138, 5, 5);
 }
 
 .modalCloseBtn {

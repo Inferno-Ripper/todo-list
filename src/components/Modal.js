@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectTheme } from '../features/darkModeSlice';
 import '../styles/Modal.css';
@@ -7,8 +7,9 @@ import {
 	seletIsModalOpen,
 	seletModal,
 } from '../features/modalSlice';
+import { Fade } from 'react-reveal';
 
-const Modal = () => {
+const Modal = ({ completeTodo, isDone }) => {
 	const darkMode = useSelector(selectTheme);
 
 	const dispatch = useDispatch();
@@ -27,9 +28,12 @@ const Modal = () => {
 			} modal`}
 		>
 			<div className='modalHeader'>
-				<h1 className='modalStatus'>
-					{todoData.completedStatus ? 'Completed' : 'Not Completed'}
-				</h1>
+				<h1 className='modalStatus'>{isDone ? 'Done' : 'Not Done'}</h1>
+				<p
+					className={`${
+						isDone ? 'CompletedBorder' : 'NotCompletedBorder'
+					} modalStatusBorder`}
+				></p>
 				<h1 className='modalCloseBtn' onClick={closeModal}>
 					X
 				</h1>
@@ -43,8 +47,9 @@ const Modal = () => {
 					className={`${
 						darkMode ? 'dark-modalBtn' : 'light-modalBtn'
 					} modalCompleteBtn modalBtn`}
+					onClick={completeTodo}
 				>
-					Complete
+					{!isDone ? 'Complete' : 'Not Complete'}
 				</button>
 				<button
 					className={`${
