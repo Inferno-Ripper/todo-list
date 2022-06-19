@@ -49,7 +49,7 @@ const Modal = ({ completeTodo, isDone }) => {
 					} modalCompleteBtn modalBtn`}
 					onClick={completeTodo}
 				>
-					{!isDone ? 'Complete' : 'Not Complete'}
+					{!isDone ? 'Complete' : 'Incomplete'}
 				</button>
 				<button
 					className={`${

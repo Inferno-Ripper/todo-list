@@ -1,0 +1,186 @@
+.login {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	/* justify-content: center; */
+	padding-top: 200px;
+	height: 100vh;
+	width: 100vw;
+}
+
+.dark-login {
+	background-color: #151820;
+	color: white;
+}
+
+.light-login {
+	background-color: #e8e8ec;
+	color: #151820;
+}
+
+.login__container {
+	width: 400px;
+	display: flex;
+	flex-direction: column;
+	gap: 30px;
+	border-radius: 7px;
+}
+
+.dark-login > .login__container {
+	background-color: #222836;
+}
+
+.light-login > .login__container {
+	background-color: #fefefe;
+}
+
+.login__method {
+	display: flex;
+	justify-content: space-between;
+}
+
+.login__methodBtn {
+	border: none;
+	background: transparent;
+	flex: 1;
+	height: 50px;
+	font-weight: 600;
+	font-size: 16px;
+	cursor: pointer;
+	transition: all 250ms ease-in-out;
+}
+
+.login__methodBtn:hover {
+	background-color: #314f96;
+	color: white !important;
+}
+
+.dark-login .login__methodBtn {
+	color: white;
+}
+
+.light-login .login__methodBtn {
+	color: black;
+}
+
+.login__loginMethodBtn {
+	border-bottom-right-radius: 20px;
+	border-top-left-radius: 7px;
+}
+
+.login__signupMethodBtn {
+	border-bottom-left-radius: 20px;
+	border-top-right-radius: 7px;
+}
+
+.login__btnActive {
+	background-color: #4c7bf1;
+	color: white !important;
+}
+
+.login__info {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+	padding: 20px;
+}
+
+.login__rememberMeForgotPassword {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.login__inputs {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.login__inputs label:nth-child(3) {
+	margin-top: 20px;
+}
+
+.login form input {
+	height: 50px;
+	border-radius: 7px;
+	border: none;
+	outline: none;
+	font-size: 20px;
+	padding: 0 10px;
+}
+
+.dark-login form input {
+	background-color: #1b1f2a;
+	color: white;
+}
+
+.light-login form input {
+	background-color: #f4f4f4;
+}
+
+.login__rememberMe {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	cursor: pointer;
+}
+
+.login__rememberMeText {
+	color: #a7a7a9;
+	transition: all 250ms ease-in-out;
+	user-select: none;
+}
+
+/* prevents user from highlighting text */
+.noselect {
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none; /* Safari */
+	-khtml-user-select: none; /* Konqueror HTML */
+	-moz-user-select: none; /* Old versions of Firefox */
+	-ms-user-select: none; /* Internet Explorer/Edge */
+	user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Opera and Firefox */
+}
+
+.dark-login .login__rememberMe:hover > .login__rememberMeText,
+.login__rememberMeTextActive {
+	color: white;
+}
+
+.light-login .login__rememberMe:hover > .login__rememberMeText,
+.light-login .login__rememberMeTextActive {
+	color: black;
+}
+
+.login__rememberMe .MuiSvgIcon-root {
+	color: #4c7bf1;
+}
+
+.login__loginBtn {
+	background-color: #3d62ba;
+	height: 40px;
+	border-radius: 7px;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	font-size: 20px;
+	color: white;
+	font-weight: 600;
+	letter-spacing: 0.5px;
+	transition: all 250ms ease-in-out;
+}
+
+.login__loginBtn:hover {
+	background-color: #314f96;
+}
+
+.login__forgotPasswordBtn {
+	cursor: pointer;
+	color: #a7a7a9;
+	transition: all 250ms ease-in-out;
+}
+
+.login__forgotPasswordBtn:hover {
+	color: #ff505a;
+}

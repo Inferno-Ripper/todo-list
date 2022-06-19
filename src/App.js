@@ -13,6 +13,8 @@ import TodosInfo from './components/TodosInfo';
 import TodosSort from './components/TodosSort';
 import UserInfo from './components/UserInfo';
 import { seletIsModalOpen } from './features/modalSlice';
+import { selectIsUserLoggedIn, selectUser } from './features/userSlice';
+import Login from './components/Login';
 
 function App() {
 	const [todos, setTodos] = useState([]);
@@ -21,6 +23,7 @@ function App() {
 
 	const darkMode = useSelector(selectTheme);
 	const isModalOpen = useSelector(seletIsModalOpen);
+	const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
 
 	const changeTheme = () => {
 		// IF darkmode is True set it to False ELSE set it to True
@@ -50,75 +53,83 @@ function App() {
 					)}
 				</div>
 
-				<div className='App__userInfo'>
-					<UserInfo />
-				</div>
+				{isUserLoggedIn && (
+					<div className='App__userInfo'>
+						<UserInfo />
+					</div>
+				)}
 			</div>
 
 			<h1 className='App__todoListText'>Todo List</h1>
 
-			{/* todos */}
-			<div className='App__content'>
-				{/* add a new todo */}
-				<div>
-					<AddTodo todos={todos} setTodos={setTodos} />
+			{!isUserLoggedIn ? (
+				<Login />
+			) : (
+				//  todos
+				<div className='App__content'>
+					{/* add a new todo  */}
+					<div>
+						<AddTodo todos={todos} setTodos={setTodos} />
+					</div>
+
+					{/* todo list */}
+					<Fade when={todos.length > 0}>
+						<div
+							className={`${
+								darkMode ? 'dark-App__todoList' : 'light-App__todoList'
+							} App__todoList`}
+						>
+							<DragDropContext onDragEnd={handleOnDragEnd}>
+								<Droppable droppableId='Todos List'>
+									{(provided) => (
+										<div
+											className='App__todos'
+											{...provided.droppableProps}
+											ref={provided.innerRef}
+										>
+											{todos.map(({ bodyText }, index) => {
+												return (
+													<Draggable
+														key={index}
+														index={index}
+														draggableId={`'${index}'`}
+														isDragDisabled={isModalOpen}
+													>
+														{(provided) => (
+															<div
+																{...provided.draggableProps}
+																{...provided.dragHandleProps}
+																ref={provided.innerRef}
+																className={`${
+																	darkMode
+																		? 'dark-App__todo'
+																		: 'light-App__todo'
+																} App__todo`}
+															>
+																<Todo text={bodyText} />
+															</div>
+														)}
+													</Draggable>
+												);
+											})}
+
+											{provided.placeholder}
+										</div>
+									)}
+								</Droppable>
+							</DragDropContext>
+
+							{/* todo info */}
+							<TodosInfo todos={todos} />
+						</div>
+
+						{/* todo sort */}
+						<div className='App__todosInfo'>
+							<TodosSort />
+						</div>
+					</Fade>
 				</div>
-
-				{/* todo list */}
-				<Fade when={todos.length > 0}>
-					<div
-						className={`${
-							darkMode ? 'dark-App__todoList' : 'light-App__todoList'
-						} App__todoList`}
-					>
-						<DragDropContext onDragEnd={handleOnDragEnd}>
-							<Droppable droppableId='Todos List'>
-								{(provided) => (
-									<div
-										className='App__todos'
-										{...provided.droppableProps}
-										ref={provided.innerRef}
-									>
-										{todos.map(({ bodyText }, index) => {
-											return (
-												<Draggable
-													key={index}
-													index={index}
-													draggableId={`'${index}'`}
-													isDragDisabled={isModalOpen}
-												>
-													{(provided) => (
-														<div
-															{...provided.draggableProps}
-															{...provided.dragHandleProps}
-															ref={provided.innerRef}
-															className={`${
-																darkMode ? 'dark-App__todo' : 'light-App__todo'
-															} App__todo`}
-														>
-															<Todo text={bodyText} />
-														</div>
-													)}
-												</Draggable>
-											);
-										})}
-
-										{provided.placeholder}
-									</div>
-								)}
-							</Droppable>
-						</DragDropContext>
-
-						{/* todo info */}
-						<TodosInfo />
-					</div>
-
-					{/* todo sort */}
-					<div className='App__todosInfo'>
-						<TodosSort />
-					</div>
-				</Fade>
-			</div>
+			)}
 		</div>
 	);
 }

@@ -4,14 +4,14 @@ import { selectTheme } from '../features/darkModeSlice';
 import '../styles/TodosInfo.css';
 import TodosSort from './TodosSort';
 
-const TodosInfo = () => {
+const TodosInfo = ({ todos }) => {
 	const darkMode = useSelector(selectTheme);
 
 	return (
 		<div
 			className={`${darkMode ? 'dark-todosInfo' : 'light-todosInfo'} todosInfo`}
 		>
-			<p className='todosInfo__left'>5 Todos Remaining</p>
+			<p className='todosInfo__left'>{todos.length} Todos Remaining</p>
 
 			<div className='todosInfo__todosSort'>
 				<TodosSort />
