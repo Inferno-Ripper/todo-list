@@ -1,0 +1,32 @@
+.topRight {
+	position: fixed;
+	top: 20px;
+	right: 20px;
+	display: flex;
+	align-items: flex-start;
+	gap: 50px;
+	z-index: 9999 !important;
+}
+
+.topRight > *,
+.themeIcon > * {
+	font-size: 40px !important;
+	cursor: pointer;
+}
+
+.topRight > *:hover,
+.themeIcon > *:hover {
+	color: #3d62ba !important;
+}
+
+.todoListText {
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	letter-spacing: 5px;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+.todoListText:hover {
+	color: #3d62ba;
+}
