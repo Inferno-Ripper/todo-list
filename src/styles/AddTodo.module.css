@@ -1,0 +1,54 @@
+.addTodo > .form {
+	display: flex;
+	align-items: center;
+	padding: 0 5px;
+	border-radius: 7px;
+	z-index: 1;
+}
+
+.input {
+	background: transparent;
+	width: 100%;
+	height: 70px;
+	outline: none;
+	border: none;
+	font-size: 20px;
+	padding: 0 15px;
+	color: black;
+}
+
+.dark-addTodo > .form {
+	background-color: #222836;
+	color: white;
+}
+
+.dark-addTodo > .form > .input {
+	color: white;
+}
+
+.form {
+	background-color: #fefefe;
+	color: black;
+}
+
+.addIcon {
+	font-size: 40px !important;
+	cursor: pointer !important;
+	color: #222836;
+}
+
+.addIcon > * {
+	font-size: 40px !important;
+}
+
+.dark-addTodo > .form > .addIcon {
+	color: white !important;
+}
+
+.addIcon:hover > * {
+	color: #3d62ba !important;
+}
+
+.submitBtn {
+	display: none;
+}

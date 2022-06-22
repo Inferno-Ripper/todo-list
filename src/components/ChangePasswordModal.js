@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Zoom } from 'react-reveal';
 import { selectTheme } from '../features/darkModeSlice';
-import '../styles/ChangePasswordModal.css';
+import styles from '../styles/ChangePasswordModal.module.css';
 
 const ChangePasswordModal = ({ setIsChangePasswordModalOpen }) => {
 	const darkMode = useSelector(selectTheme);
@@ -18,29 +18,27 @@ const ChangePasswordModal = ({ setIsChangePasswordModalOpen }) => {
 
 	return (
 		<div
-			onClick={closeModal}
-			className={`${
-				darkMode ? 'dark-changePasswordModal' : 'light-changePasswordModal'
-			} changePasswordModal`}
+			// onClick={closeModal}
+			className={`${styles.modal} ${darkMode && styles['dark-modal']}`}
 		>
 			<Zoom>
-				<form className='changePasswordModalContainer'>
+				<form className={styles.container}>
 					<div>
-						<div className='password'>
+						<div className={styles.password}>
 							<label htmlFor='oldPassword'>Old Password</label>
 							<input type='password' name='oldPassword' />
 						</div>
-						<div className='password'>
+						<div className={styles.password}>
 							<label htmlFor='NewPassword'>New Password</label>
 							<input type='password' />
 						</div>
 					</div>
 
-					<button className='passwordBtn' onClick={changePassword}>
+					<button className={styles.submitBtn} onClick={changePassword}>
 						Submit
 					</button>
 
-					<h1 className='changePasswordModalCloseBtn' onClick={closeModal}>
+					<h1 className={styles.closeBtn} onClick={closeModal}>
 						X
 					</h1>
 				</form>

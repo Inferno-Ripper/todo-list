@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../features/darkModeSlice';
-import '../styles/TodosInfo.css';
+import styles from '../styles/TodosInfo.module.css';
 import TodosSort from './TodosSort';
 
 const TodosInfo = ({ todos }) => {
@@ -9,15 +9,15 @@ const TodosInfo = ({ todos }) => {
 
 	return (
 		<div
-			className={`${darkMode ? 'dark-todosInfo' : 'light-todosInfo'} todosInfo`}
+			className={`${styles.todosInfo} ${darkMode && styles['dark-todosInfo']}`}
 		>
-			<p className='todosInfo__left'>{todos.length} Todos Remaining</p>
+			<p className={styles.left}>{todos.length} Todos Remaining</p>
 
-			<div className='todosInfo__todosSort'>
+			<div className={styles.todosSort}>
 				<TodosSort />
 			</div>
 
-			<p className='todosInfo__right'>Clear Completed</p>
+			<p className={styles.right}>Clear Completed</p>
 		</div>
 	);
 };

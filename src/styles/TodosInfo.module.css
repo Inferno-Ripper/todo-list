@@ -8,6 +8,9 @@
 	bottom: 0;
 	border-bottom-right-radius: 7px;
 	border-bottom-left-radius: 7px;
+	background-color: white;
+	border-top: 1px solid #dcdbdb;
+	color: gray;
 }
 
 .dark-todosInfo {
@@ -16,19 +19,13 @@
 	color: #51536c;
 }
 
-.light-todosInfo {
-	background-color: white;
-	border-top: 1px solid #dcdbdb;
-	color: gray;
-}
-
-.todosInfo p:hover {
+.todosInfo > p:hover {
 	color: #3d62ba;
 	cursor: pointer;
 }
 
 @media (max-width: 1024px) {
-	.todosInfo__todosSort {
+	.todosSort {
 		display: none !important;
 	}
 }

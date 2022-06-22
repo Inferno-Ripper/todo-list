@@ -1,13 +1,14 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectTheme } from '../features/darkModeSlice';
-import '../styles/Modal.css';
+import styles from '../styles/Modal.module.css';
 import {
 	closeModalRedux,
 	seletIsModalOpen,
 	seletModal,
 } from '../features/modalSlice';
-import { Fade } from 'react-reveal';
+// icons
+import EditIcon from '@mui/icons-material/Edit';
 
 const Modal = ({ completeTodo, isDone }) => {
 	const darkMode = useSelector(selectTheme);
@@ -23,41 +24,39 @@ const Modal = ({ completeTodo, isDone }) => {
 
 	return (
 		<div
-			className={`${darkMode ? 'dark-modal' : 'light-modal'} ${
-				isModalOpen ? 'show__modal' : 'hide__modal'
-			} modal`}
+			className={`${styles.modal} ${darkMode && styles['dark-modal']} ${
+				isModalOpen ? styles.show__modal : styles.hide__modal
+			} `}
 		>
-			<div className='modalHeader'>
-				<h1 className='modalStatus'>{isDone ? 'Done' : 'Not Done'}</h1>
+			<div className={styles.header}>
+				<h1 className={styles.status}>{isDone ? 'Done' : 'Not Done'}</h1>
+
 				<p
-					className={`${
-						isDone ? 'CompletedBorder' : 'NotCompletedBorder'
-					} modalStatusBorder`}
+					className={` ${styles.statusBorder} ${
+						isDone ? styles.CompletedBorder : styles.NotCompletedBorder
+					}`}
 				></p>
-				<h1 className='modalCloseBtn' onClick={closeModal}>
+				<h1 className={styles.closeBtn} onClick={closeModal}>
 					X
 				</h1>
-				<div className='modalBody'>
-					<p className='modalBodyText'>{todoData.bodyText}</p>
+				<div className={styles.body}>
+					<p className={styles.text}>{todoData.bodyText}</p>
+				</div>
+
+				<div className={styles.editIcon}>
+					<EditIcon style={{ fontSize: '25px' }} />
 				</div>
 			</div>
 
-			<div className='modalFooter'>
+			<div className={styles.footer}>
 				<button
-					className={`${
-						darkMode ? 'dark-modalBtn' : 'light-modalBtn'
-					} modalCompleteBtn modalBtn`}
+					className={`${styles.completeBtn} ${styles.btn}`}
 					onClick={completeTodo}
 				>
 					{!isDone ? 'Complete' : 'Incomplete'}
 				</button>
-				<button
-					className={`${
-						darkMode ? 'dark-modalBtn' : 'light-modalBtn'
-					} modalDeleteBtn modalBtn`}
-				>
-					Delete
-				</button>
+
+				<button className={`${styles.deleteBtn} ${styles.btn}`}>Delete</button>
 			</div>
 		</div>
 	);

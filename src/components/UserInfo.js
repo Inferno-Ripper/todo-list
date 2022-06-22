@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/UserInfo.css';
+import styles from '../styles/UserInfo.module.css';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../features/darkModeSlice';
 // icons
@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 
 const UserInfo = () => {
 	const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
-		useState(true);
+		useState(false);
 
 	const darkMode = useSelector(selectTheme);
 
@@ -26,22 +26,18 @@ const UserInfo = () => {
 		<>
 			<div>
 				<div
-					className={`${
-						darkMode ? 'dark-userInfo' : 'light-userInfo'
-					} userInfo`}
+					className={`${styles.userInfo} ${
+						darkMode && styles['dark-userInfo']
+					} `}
 				>
-					<PersonIcon />
-					<div
-						className={`${
-							darkMode ? 'dark-userInfo__list' : 'light-userInfo__list'
-						} userInfo__list`}
-					>
+					<PersonIcon className={styles.accountIcon} />
+					<div className={styles.container}>
 						<p>Name</p>
 						<p>Email</p>
 						<p onClick={openChangePasswordModal}>Change Password</p>
 						<p>Logout</p>
 					</div>
-					<div className='userInfo__upArrow'></div>
+					<div className={styles.upArrow}></div>
 				</div>
 
 				{isChangePasswordModalOpen && (

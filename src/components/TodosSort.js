@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectTheme } from '../features/darkModeSlice';
 import { seletIsModalOpen } from '../features/modalSlice';
-import '../styles/TodosSort.css';
+import styles from '../styles/TodosSort.module.css';
 
 const TodosSort = () => {
 	const darkMode = useSelector(selectTheme);
@@ -13,11 +13,11 @@ const TodosSort = () => {
 
 	return (
 		<div
-			className={`${darkMode ? 'dark-todosSort' : 'light-todosSort'} todosSort`}
+			className={`${styles.todosSort} ${darkMode && styles['dark-todosSort']} `}
 		>
-			<p className='todosSort__all todosSort__seleted'>All</p>
-			<p className='todosSort__active'>Active</p>
-			<p className='todosSort__completed'>Completed</p>
+			<p className={(styles.sortAll, styles.sortSeleted)}>All</p>
+			<p className={styles.sortActive}>Active</p>
+			<p className={styles.sortCompleted}>Completed</p>
 		</div>
 	);
 };

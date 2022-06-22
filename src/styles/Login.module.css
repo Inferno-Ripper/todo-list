@@ -2,9 +2,11 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding-top: 200px;
+	padding-top: 150px;
 	height: 100vh;
 	width: 100vw;
+	background-color: #e8e8ec;
+	color: #151820;
 }
 
 .dark-login {
@@ -12,25 +14,17 @@
 	color: white;
 }
 
-.light-login {
-	background-color: #e8e8ec;
-	color: #151820;
-}
-
-.login__container {
+.container {
 	width: 400px;
 	display: flex;
 	flex-direction: column;
 	gap: 30px;
 	border-radius: 7px;
-}
-
-.dark-login > .login__container {
-	background-color: #222836;
-}
-
-.light-login > .login__container {
 	background-color: #fefefe;
+}
+
+.dark-login > .container {
+	background-color: #222836;
 }
 
 .login__method {
@@ -38,7 +32,7 @@
 	justify-content: space-between;
 }
 
-.login__methodBtn {
+.loginMethodBtn {
 	border: none;
 	background: transparent;
 	flex: 1;
@@ -47,57 +41,55 @@
 	font-size: 16px;
 	cursor: pointer;
 	transition: all 250ms ease-in-out;
+	color: black;
 }
 
-.login__methodBtn:hover {
+.loginMethodBtn:hover {
 	background-color: #314f96;
 	color: white !important;
 }
 
-.dark-login .login__methodBtn {
+.dark-login .loginMethodBtn {
 	color: white;
 }
 
-.light-login .login__methodBtn {
-	color: black;
-}
-
-.login__loginMethodBtn {
+.loginMethodBtn {
 	border-bottom-right-radius: 20px;
 	border-top-left-radius: 7px;
 }
 
-.login__signupMethodBtn {
+.registerMethodBtn {
+	border-radius: 0;
 	border-bottom-left-radius: 20px;
 	border-top-right-radius: 7px;
 }
 
-.login__btnActive {
+.loginMethodBtnActive {
 	background-color: #4c7bf1;
 	color: white !important;
 }
 
-.login__info {
+.info {
 	display: flex;
 	flex-direction: column;
-	gap: 20px;
-	padding: 20px;
+	gap: 30px;
+	padding: 30px;
 }
 
-.login__rememberMeForgotPassword {
+.rememberMeForgotPassword {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
 
-.login__inputs {
+.inputs {
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
 }
 
-.login__inputs label:nth-child(3) {
-	margin-top: 20px;
+.inputs label:not(:first-child) {
+	margin-top: 30px;
 }
 
 .login form input {
@@ -105,8 +97,13 @@
 	border-radius: 7px;
 	border: none;
 	outline: none;
-	font-size: 20px;
-	padding: 0 10px;
+	font-size: 18px;
+	padding: 0 15px;
+	background-color: #f4f4f4;
+}
+
+.login form label {
+	font-weight: 600;
 }
 
 .dark-login form input {
@@ -114,18 +111,14 @@
 	color: white;
 }
 
-.light-login form input {
-	background-color: #f4f4f4;
-}
-
-.login__rememberMe {
+.rememberMe {
 	display: flex;
 	align-items: center;
 	gap: 5px;
 	cursor: pointer;
 }
 
-.login__rememberMeText {
+.rememberMeText {
 	color: #a7a7a9;
 	transition: all 250ms ease-in-out;
 	user-select: none;
@@ -142,44 +135,41 @@
                                   supported by Chrome, Opera and Firefox */
 }
 
-.dark-login .login__rememberMe:hover > .login__rememberMeText,
-.login__rememberMeTextActive {
-	color: white;
-}
-
-.light-login .login__rememberMe:hover > .login__rememberMeText,
-.light-login .login__rememberMeTextActive {
+.rememberMe:hover > .rememberMeText,
+.rememberMeTextActive {
 	color: black;
 }
 
-.login__rememberMe .MuiSvgIcon-root {
-	color: #4c7bf1;
+.dark-login .rememberMe:hover > .rememberMeText,
+.dark-login .rememberMeTextActive {
+	color: white;
 }
 
-.login__loginBtn {
+.loginBtn {
 	background-color: #3d62ba;
 	height: 40px;
 	border-radius: 7px;
 	border: none;
 	outline: none;
 	cursor: pointer;
-	font-size: 20px;
+	font-size: 18px;
 	color: white;
 	font-weight: 600;
 	letter-spacing: 0.5px;
 	transition: all 250ms ease-in-out;
+	margin-top: 20px;
 }
 
-.login__loginBtn:hover {
+.loginBtn:hover {
 	background-color: #314f96;
 }
 
-.login__forgotPasswordBtn {
+.forgotPasswordBtn {
 	cursor: pointer;
 	color: #a7a7a9;
 	transition: all 250ms ease-in-out;
 }
 
-.login__forgotPasswordBtn:hover {
+.forgotPasswordBtn:hover {
 	color: #ff505a;
 }

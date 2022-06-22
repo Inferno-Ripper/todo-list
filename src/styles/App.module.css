@@ -1,0 +1,82 @@
+.app {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	height: 100vh;
+	width: 100vw;
+	position: relative;
+	transition: background-color 0.5s ease-in-out;
+	background-color: #e8e8ec;
+	color: black;
+}
+
+.dark-app {
+	background-color: #151820;
+	color: white;
+}
+
+/* todos */
+
+.content {
+	height: 70vh;
+	width: 80vw;
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+	position: relative;
+	z-index: 1;
+}
+
+@media (min-width: 1024px) {
+	.content {
+		width: 50vw;
+		margin-top: -50px;
+	}
+}
+
+/* todos list */
+
+.todos {
+	height: auto;
+	max-height: 48vh;
+	overflow: scroll;
+	border-radius: 7px;
+	z-index: 10 !important;
+}
+
+@media (min-width: 1024px) {
+	.todos {
+		max-height: 63vh;
+		overflow: scroll;
+		border-radius: 7px;
+	}
+}
+
+.todo:not(:last-child) {
+	border-bottom: 1px solid #dcdbdb;
+}
+
+.dark-app .todo:not(:last-child) {
+	border-bottom: 1px solid #2f3146;
+}
+
+.todoList {
+	border-radius: 7px;
+	display: flex;
+	flex-direction: column;
+	background-color: #222836;
+	background-color: white;
+}
+
+.dark-app .todoList {
+	background-color: #222836;
+}
+
+/* todos info */
+
+@media (min-width: 1024px) {
+	.todosInfo {
+		display: none;
+	}
+}

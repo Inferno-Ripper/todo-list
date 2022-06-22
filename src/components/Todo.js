@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/Todo.css';
+import styles from '../styles/Todo.module.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectTheme } from '../features/darkModeSlice';
 import Modal from './Modal';
@@ -37,41 +37,35 @@ const Todo = ({ text }) => {
 
 	return (
 		<>
-			<div className={`${darkMode ? 'dark-todo' : 'light-todo'} todo`}>
+			<div className={`${styles.todo} ${darkMode && styles['dark-todo']} `}>
 				<Fade>
-					<div className='todo__left' onClick={completeTodo}>
+					<div className={styles.left} onClick={completeTodo}>
 						<div
-							className={`${
-								darkMode
-									? 'dark-todo__completedCircle'
-									: 'light-todo__completedCircle'
-							} todo__completedCircle ${
-								isDone && darkMode
-									? 'dark-todo__done'
-									: isDone && 'light-todo__done'
-							} todo__done`}
+							className={`${styles.completedCircle} ${
+								isDone && styles.todoDone
+							} `}
 						>
-							{isDone && <DoneIcon className='todo__done' />}
+							{isDone && <DoneIcon className={styles.doneIcon} />}
 						</div>
 
-						<p className={`${isDone && 'todo__doneText'} todo__text noselect`}>
+						<p
+							className={`${isDone && styles.doneText} ${styles.text} ${
+								styles.noselect
+							}`}
+						>
 							{text}
 						</p>
 					</div>
 
-					<div className='todo__rightIcons'>
-						<EditIcon className='todo__expandAndEditIcon' />
+					<div className={styles.rightIcons}>
+						<EditIcon className={styles.expandAndEditIcon} />
 
 						<OpenInFullIcon
 							onClick={openModal}
-							className='todo__expandAndEditIcon'
+							className={styles.expandAndEditIcon}
 						/>
 
-						<DeleteIcon
-							className={`${
-								darkMode ? 'dark-todo__delete' : 'light-todo__delete'
-							} todo__delete`}
-						/>
+						<DeleteIcon className={styles.deleteIcon} />
 					</div>
 				</Fade>
 			</div>
