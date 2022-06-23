@@ -16,7 +16,7 @@
 	color: white;
 }
 
-/* todos */
+/* content */
 
 .content {
 	height: 70vh;
@@ -35,9 +35,9 @@
 	}
 }
 
-/* todos list */
+/* todos container */
 
-.todos {
+.todosContainer {
 	height: auto;
 	max-height: 48vh;
 	overflow: scroll;
@@ -46,7 +46,7 @@
 }
 
 @media (min-width: 1024px) {
-	.todos {
+	.todosContainer {
 		max-height: 63vh;
 		overflow: scroll;
 		border-radius: 7px;
@@ -60,6 +60,8 @@
 .dark-app .todo:not(:last-child) {
 	border-bottom: 1px solid #2f3146;
 }
+
+/* todo list */
 
 .todoList {
 	border-radius: 7px;
@@ -76,7 +78,7 @@
 /* todos info */
 
 @media (min-width: 1024px) {
-	.todosInfo {
+	.todosSort {
 		display: none;
 	}
 }

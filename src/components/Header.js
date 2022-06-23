@@ -10,11 +10,13 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 
 const Header = () => {
+	// redux
 	const dispatch = useDispatch();
 
 	const darkMode = useSelector(selectTheme);
 	const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
 
+	// functions
 	const changeTheme = () => {
 		// IF darkmode is True set it to False ELSE set it to True
 		dispatch(changeTheTheme(darkMode === true ? false : true));
@@ -22,8 +24,10 @@ const Header = () => {
 
 	return (
 		<>
+			{/* todo list text */}
 			<h1 className={styles.todoListText}>Todo List</h1>
 
+			{/* top right */}
 			<div className={styles.topRight}>
 				<div className={styles.themeIcon} onClick={changeTheme}>
 					{/* IF darkMode is True display the  LightModeIcon ELSE display the DarkModeIcon*/}

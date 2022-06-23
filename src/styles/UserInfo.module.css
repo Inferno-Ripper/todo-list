@@ -1,9 +1,18 @@
+/* user info */
+
 .userInfo {
 	display: flex;
 	flex-direction: column;
 	height: 50px;
-	/* position: relative; */
 }
+
+/* account icon */
+
+.accountIcon {
+	font-size: 40px !important;
+}
+
+/* container */
 
 .container {
 	position: absolute;
@@ -14,12 +23,8 @@
 	align-items: left;
 	border-radius: 7px;
 	display: none;
-	z-index: 10;
+	z-index: 9999;
 	background-color: #fefefe;
-}
-
-.accountIcon {
-	font-size: 40px !important;
 }
 
 .userInfo:hover .container,
@@ -74,6 +79,8 @@
 .dark-userInfo > .container > p:not(:last-child) {
 	border-bottom: 1px solid #2f3146;
 }
+
+/* up arrow */
 
 .upArrow {
 	width: 15px;

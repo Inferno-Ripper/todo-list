@@ -1,3 +1,19 @@
+/* todo list text */
+
+.todoListText {
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	letter-spacing: 5px;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+.todoListText:hover {
+	color: #3d62ba;
+}
+
+/* top right */
+
 .topRight {
 	position: fixed;
 	top: 20px;
@@ -17,16 +33,4 @@
 .topRight > *:hover,
 .themeIcon > *:hover {
 	color: #3d62ba !important;
-}
-
-.todoListText {
-	position: absolute;
-	top: 20px;
-	left: 20px;
-	letter-spacing: 5px;
-	text-transform: uppercase;
-	cursor: pointer;
-}
-.todoListText:hover {
-	color: #3d62ba;
 }

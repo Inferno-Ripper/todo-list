@@ -12,13 +12,16 @@ import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import EditIcon from '@mui/icons-material/Edit';
 
 const Todo = ({ text }) => {
+	// state
 	const [isDone, setIsDone] = useState(false);
+
+	// redux
+	const dispatch = useDispatch();
 
 	const darkMode = useSelector(selectTheme);
 	const isModalOpen = useSelector(seletIsModalOpen);
 
-	const dispatch = useDispatch();
-
+	// functions
 	const completeTodo = () => {
 		setIsDone((prev) => {
 			return !prev;
@@ -37,17 +40,21 @@ const Todo = ({ text }) => {
 
 	return (
 		<>
+			{/* todo */}
 			<div className={`${styles.todo} ${darkMode && styles['dark-todo']} `}>
 				<Fade>
+					{/* left */}
 					<div className={styles.left} onClick={completeTodo}>
+						{/* completed circle */}
 						<div
 							className={`${styles.completedCircle} ${
 								isDone && styles.todoDone
 							} `}
 						>
-							{isDone && <DoneIcon className={styles.doneIcon} />}
+							{isDone && <DoneIcon />}
 						</div>
 
+						{/* text */}
 						<p
 							className={`${isDone && styles.doneText} ${styles.text} ${
 								styles.noselect
@@ -57,14 +64,20 @@ const Todo = ({ text }) => {
 						</p>
 					</div>
 
+					{/* right icons */}
 					<div className={styles.rightIcons}>
+						{/* expand and edit icon */}
+
+						{/* edit icon  */}
 						<EditIcon className={styles.expandAndEditIcon} />
 
+						{/* expand icon */}
 						<OpenInFullIcon
 							onClick={openModal}
 							className={styles.expandAndEditIcon}
 						/>
 
+						{/* delete icon */}
 						<DeleteIcon className={styles.deleteIcon} />
 					</div>
 				</Fade>

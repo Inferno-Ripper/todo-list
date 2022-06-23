@@ -5,19 +5,22 @@ import styles from '../styles/TodosInfo.module.css';
 import TodosSort from './TodosSort';
 
 const TodosInfo = ({ todos }) => {
+	// redux
 	const darkMode = useSelector(selectTheme);
 
 	return (
+		// todo information
 		<div
 			className={`${styles.todosInfo} ${darkMode && styles['dark-todosInfo']}`}
 		>
 			<p className={styles.left}>{todos.length} Todos Remaining</p>
 
+			{/* todos sort */}
 			<div className={styles.todosSort}>
 				<TodosSort />
 			</div>
 
-			<p className={styles.right}>Clear Completed</p>
+			<p>Clear Completed</p>
 		</div>
 	);
 };

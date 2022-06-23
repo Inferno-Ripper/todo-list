@@ -1,3 +1,5 @@
+/* login */
+
 .login {
 	display: flex;
 	flex-direction: column;
@@ -14,11 +16,13 @@
 	color: white;
 }
 
+/* container */
+
 .container {
 	width: 400px;
 	display: flex;
 	flex-direction: column;
-	gap: 30px;
+	gap: 50px;
 	border-radius: 7px;
 	background-color: #fefefe;
 }
@@ -27,10 +31,14 @@
 	background-color: #222836;
 }
 
+/* login method */
+
 .login__method {
 	display: flex;
 	justify-content: space-between;
 }
+
+/* login method button */
 
 .loginMethodBtn {
 	border: none;
@@ -58,29 +66,31 @@
 	border-top-left-radius: 7px;
 }
 
+/* register method button */
+
 .registerMethodBtn {
 	border-radius: 0;
 	border-bottom-left-radius: 20px;
 	border-top-right-radius: 7px;
 }
 
+/* login method button active */
+
 .loginMethodBtnActive {
 	background-color: #4c7bf1;
 	color: white !important;
 }
 
-.info {
+/* user info */
+
+.userInfo {
 	display: flex;
 	flex-direction: column;
 	gap: 30px;
-	padding: 30px;
+	padding: 0 30px;
 }
 
-.rememberMeForgotPassword {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
+/* inputs */
 
 .inputs {
 	display: flex;
@@ -111,6 +121,16 @@
 	color: white;
 }
 
+/* remember me and forgot password */
+
+.rememberMeForgotPassword {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+/* remember me  */
+
 .rememberMe {
 	display: flex;
 	align-items: center;
@@ -119,7 +139,7 @@
 }
 
 .rememberMeText {
-	color: #a7a7a9;
+	color: #909091;
 	transition: all 250ms ease-in-out;
 	user-select: none;
 }
@@ -145,7 +165,25 @@
 	color: white;
 }
 
-.loginBtn {
+/* forgot password */
+
+.forgotPasswordBtn {
+	cursor: pointer;
+	color: #909091;
+	transition: all 250ms ease-in-out;
+}
+
+.forgotPasswordBtn:hover {
+	color: black;
+}
+
+.dark-login .forgotPasswordBtn:hover {
+	color: white;
+}
+
+/* submit button */
+
+.submitBtn {
 	background-color: #3d62ba;
 	height: 40px;
 	border-radius: 7px;
@@ -157,19 +195,57 @@
 	font-weight: 600;
 	letter-spacing: 0.5px;
 	transition: all 250ms ease-in-out;
-	margin-top: 20px;
+	margin-top: 30px;
 }
 
-.loginBtn:hover {
+.submitBtn:hover {
 	background-color: #314f96;
 }
 
-.forgotPasswordBtn {
-	cursor: pointer;
-	color: #a7a7a9;
-	transition: all 250ms ease-in-out;
+/* auth login */
+
+.auths {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 30px;
+	margin-top: -20px;
+	padding-bottom: 10px;
 }
 
-.forgotPasswordBtn:hover {
-	color: #ff505a;
+.auth {
+	height: 70px !important;
+	width: 70px !important;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 7px;
+	cursor: pointer;
+	transition: background-color 250ms ease-in-out;
+}
+
+.auth:hover {
+	background-color: #f4f4f4;
+}
+
+.dark-login .auth:hover {
+	background-color: #1b1f2a;
+}
+
+.authLogo {
+	height: 50px !important;
+	width: 50px !important;
+	object-fit: cover;
+	border-radius: 7px;
+}
+
+.facebookLogo {
+	height: 40px !important;
+	width: 40px !important;
+}
+
+.appleLogo {
+	height: 45px !important;
+	width: 45px !important;
+	padding-bottom: 5px;
 }

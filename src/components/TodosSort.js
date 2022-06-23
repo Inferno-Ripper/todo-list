@@ -5,6 +5,7 @@ import { seletIsModalOpen } from '../features/modalSlice';
 import styles from '../styles/TodosSort.module.css';
 
 const TodosSort = () => {
+	// redux
 	const darkMode = useSelector(selectTheme);
 	const isModalOpen = useSelector(seletIsModalOpen);
 
@@ -12,6 +13,7 @@ const TodosSort = () => {
 	if (isModalOpen) return;
 
 	return (
+		// todos sort
 		<div
 			className={`${styles.todosSort} ${darkMode && styles['dark-todosSort']} `}
 		>

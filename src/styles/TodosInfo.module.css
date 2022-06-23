@@ -1,3 +1,5 @@
+/* todo information */
+
 .todosInfo {
 	display: flex;
 	align-items: center;
@@ -23,6 +25,8 @@
 	color: #3d62ba;
 	cursor: pointer;
 }
+
+/* todos sort */
 
 @media (max-width: 1024px) {
 	.todosSort {

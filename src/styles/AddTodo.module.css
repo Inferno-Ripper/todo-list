@@ -1,10 +1,24 @@
-.addTodo > .form {
+/* form */
+
+.form {
 	display: flex;
 	align-items: center;
 	padding: 0 5px;
 	border-radius: 7px;
 	z-index: 1;
 }
+
+.form {
+	background-color: #fefefe;
+	color: black;
+}
+
+.dark-addTodo > .form {
+	background-color: #222836;
+	color: white;
+}
+
+/* input */
 
 .input {
 	background: transparent;
@@ -17,19 +31,16 @@
 	color: black;
 }
 
-.dark-addTodo > .form {
-	background-color: #222836;
-	color: white;
-}
-
 .dark-addTodo > .form > .input {
 	color: white;
 }
 
-.form {
-	background-color: #fefefe;
-	color: black;
+/* submit button */
+.submitBtn {
+	display: none;
 }
+
+/* add icon */
 
 .addIcon {
 	font-size: 40px !important;
@@ -47,8 +58,4 @@
 
 .addIcon:hover > * {
 	color: #3d62ba !important;
-}
-
-.submitBtn {
-	display: none;
 }

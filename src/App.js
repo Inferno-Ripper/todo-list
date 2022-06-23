@@ -1,6 +1,6 @@
-import react, { useState } from 'react';
+import { useState } from 'react';
 import styles from './styles/App.module.css';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectTheme } from './features/darkModeSlice';
 import { Fade } from 'react-reveal';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
@@ -14,14 +14,16 @@ import Login from './components/Login';
 import Header from './components/Header';
 
 function App() {
+	// state
 	const [todos, setTodos] = useState([]);
 
-	const dispatch = useDispatch();
-
+	// redux
 	const darkMode = useSelector(selectTheme);
 	const isModalOpen = useSelector(seletIsModalOpen);
 	const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
 
+	// functions
+	// drag and drop animation
 	function handleOnDragEnd(result) {
 		if (!result.destination) return;
 
@@ -33,10 +35,11 @@ function App() {
 	}
 
 	return (
-		// IF the theme is set to dark then give the div dark-App className ELSE give the div light-App className
+		// IF the theme is set to dark then give the div dark-App className
 		<div className={`${styles.app} ${darkMode && styles['dark-app']}`}>
 			<Header />
 
+			{/* IF user is not logged in render the  Login Page ELSE render the Home Page*/}
 			{!isUserLoggedIn ? (
 				<Login />
 			) : (
@@ -54,7 +57,7 @@ function App() {
 								<Droppable droppableId='Todos List'>
 									{(provided) => (
 										<div
-											className={styles.todos}
+											className={styles.todosContainer}
 											{...provided.droppableProps}
 											ref={provided.innerRef}
 										>
@@ -91,7 +94,7 @@ function App() {
 						</div>
 
 						{/* todo sort */}
-						<div className={styles.todosInfo}>
+						<div className={styles.todosSort}>
 							<TodosSort />
 						</div>
 					</Fade>

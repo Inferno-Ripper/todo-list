@@ -5,11 +5,14 @@ import styles from '../styles/AddTodo.module.css';
 // icons
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
-const AddTodo = ({ todos, setTodos }) => {
+const AddTodo = ({ setTodos }) => {
+	// state
 	const [newTodo, setNewTodo] = useState('');
 
+	// redux
 	const darkMode = useSelector(selectTheme);
 
+	// functions
 	const addNewTodo = (e) => {
 		e.preventDefault();
 
@@ -26,16 +29,21 @@ const AddTodo = ({ todos, setTodos }) => {
 
 	return (
 		<div className={`${styles.addTodo} ${darkMode && styles['dark-addTodo']}`}>
+			{/* form */}
 			<form className={styles.form}>
+				{/* input */}
 				<input
 					className={styles.input}
 					value={newTodo}
 					onChange={(e) => setNewTodo(e.currentTarget.value)}
 				/>
+
+				{/* submit button */}
 				<button type='submit' onClick={addNewTodo} className={styles.submitBtn}>
 					Submit
 				</button>
 
+				{/* add icon */}
 				<div className={styles.addIcon}>
 					<AddCircleIcon onClick={addNewTodo} />
 				</div>
