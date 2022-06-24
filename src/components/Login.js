@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { selectTheme } from '../features/darkModeSlice';
 import styles from '../styles/Login.module.css';
 import { Fade } from 'react-reveal';
-import { auth, provider } from '../firebase';
+import { auth, facebookProvider, googleProvider, provider } from '../firebase';
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 // icons
@@ -24,7 +24,7 @@ const Login = () => {
 
 	// functions
 	const loginWithGoogle = () => {
-		signInWithPopup(auth, provider)
+		signInWithPopup(auth, googleProvider)
 			.then((result) => {
 				// The signed-in user info.
 				const user = result.user;
@@ -46,6 +46,34 @@ const Login = () => {
 				// The AuthCredential type that was used.
 				const credential = GoogleAuthProvider.credentialFromError(error);
 				// ...
+			});
+	};
+	// functions
+	const loginWithFacebook = () => {
+		signInWithPopup(auth, facebookProvider)
+			.then((result) => {
+				// The signed-in user info.
+				const user = result;
+
+				console.log(user);
+				// sending the data to redux
+				dispatch(
+					login({
+						signInProvider: result.providerId,
+						user: { name: user.displayName, email: user.email },
+					})
+				);
+			})
+			.catch((error) => {
+				// Handle Errors here.
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				// The email of the user's account used.
+				const email = error.customData.email;
+				// The AuthCredential type that was used.
+				const credential = GoogleAuthProvider.credentialFromError(error);
+				// ...
+				console.log(error);
 			});
 	};
 
@@ -152,7 +180,7 @@ const Login = () => {
 					</div>
 
 					{/* facebook */}
-					<div className={styles.auth}>
+					<div className={styles.auth} onClick={loginWithFacebook}>
 						<img
 							src='assets/images/facebook-logo.png'
 							alt=''
