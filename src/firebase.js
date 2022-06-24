@@ -2,7 +2,9 @@ import {
 	FacebookAuthProvider,
 	getAuth,
 	GoogleAuthProvider,
+	OAuthProvider,
 } from 'firebase/auth';
+
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
@@ -27,4 +29,6 @@ const googleProvider = new GoogleAuthProvider();
 
 const facebookProvider = new FacebookAuthProvider();
 
-export { googleProvider, facebookProvider, auth };
+const microsoftProvider = new OAuthProvider('microsoft.com');
+
+export { googleProvider, facebookProvider, microsoftProvider, auth };

@@ -3,8 +3,18 @@ import { useSelector } from 'react-redux';
 import { selectTheme } from '../features/darkModeSlice';
 import styles from '../styles/Login.module.css';
 import { Fade } from 'react-reveal';
-import { auth, facebookProvider, googleProvider, provider } from '../firebase';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import {
+	auth,
+	facebookProvider,
+	googleProvider,
+	microsoftProvider,
+	provider,
+} from '../firebase';
+import {
+	GoogleAuthProvider,
+	OAuthProvider,
+	signInWithPopup,
+} from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 // icons
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
@@ -48,14 +58,43 @@ const Login = () => {
 				// ...
 			});
 	};
-	// functions
+
 	const loginWithFacebook = () => {
 		signInWithPopup(auth, facebookProvider)
 			.then((result) => {
 				// The signed-in user info.
-				const user = result;
+				const user = result._tokenResponse;
 
-				console.log(user);
+				// sending the data to redux
+				dispatch(
+					login({
+						signInProvider: result.providerId,
+						user: {
+							name: user.displayName,
+							email: user.email,
+						},
+					})
+				);
+			})
+			.catch((error) => {
+				// Handle Errors here.
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				// The email of the user's account used.
+				const email = error.customData.email;
+				// The AuthCredential type that was used.
+				const credential = GoogleAuthProvider.credentialFromError(error);
+				// ...
+				console.log(error);
+			});
+	};
+
+	const loginWithMicrosoft = () => {
+		signInWithPopup(auth, microsoftProvider)
+			.then((result) => {
+				// The signed-in user info.
+				const user = result.user;
+
 				// sending the data to redux
 				dispatch(
 					login({
@@ -73,8 +112,11 @@ const Login = () => {
 				// The AuthCredential type that was used.
 				const credential = GoogleAuthProvider.credentialFromError(error);
 				// ...
-				console.log(error);
 			});
+
+		microsoftProvider.setCustomParameters({
+			tenant: '52237e8e-58c1-4715-9c0b-341df4360da0',
+		});
 	};
 
 	return (
@@ -189,7 +231,7 @@ const Login = () => {
 					</div>
 
 					{/* microsoft */}
-					<div className={styles.auth}>
+					<div className={styles.auth} onClick={loginWithMicrosoft}>
 						<img
 							src='assets/images/microsoft-logo.png'
 							alt=''

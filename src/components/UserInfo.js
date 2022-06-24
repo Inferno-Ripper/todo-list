@@ -5,9 +5,14 @@ import { selectTheme } from '../features/darkModeSlice';
 import ChangePasswordModal from './ChangePasswordModal';
 import { closeModalRedux } from '../features/modalSlice';
 import { useDispatch } from 'react-redux';
-import { logoutRedux, selectUser } from '../features/userSlice';
+import {
+	logoutRedux,
+	selectUser,
+	selectSignInProvider,
+} from '../features/userSlice';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
+
 // icons
 import PersonIcon from '@mui/icons-material/Person';
 
@@ -21,6 +26,7 @@ const UserInfo = () => {
 
 	const darkMode = useSelector(selectTheme);
 	const user = useSelector(selectUser);
+	const signInProvider = useSelector(selectSignInProvider);
 
 	// functions
 	const openChangePasswordModal = () => {
@@ -28,6 +34,19 @@ const UserInfo = () => {
 
 		setIsChangePasswordModalOpen(true);
 	};
+
+	let userEmail;
+	const microsoftEmailReformat = () => {
+		if (signInProvider === 'microsoft.com') {
+			userEmail = user.email
+				.replace('_', '@')
+				.slice(0, user.email.indexOf('#'));
+		} else {
+			userEmail = user?.email;
+		}
+	};
+	microsoftEmailReformat();
+	console.log(user.email);
 
 	const logout = () => {
 		// first sign out of redux
@@ -52,7 +71,7 @@ const UserInfo = () => {
 					{/* container */}
 					<div className={styles.container}>
 						<p>{user?.name}</p>
-						<p>{user?.email}</p>
+						<p>{userEmail}</p>
 						<p onClick={openChangePasswordModal}>Change Password</p>
 						<p onClick={logout}>Logout</p>
 					</div>
