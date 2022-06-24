@@ -233,8 +233,8 @@
 }
 
 .authLogo {
-	height: 50px !important;
-	width: 50px !important;
+	height: 50px;
+	width: 50px;
 	object-fit: cover;
 	border-radius: 7px;
 }
@@ -242,10 +242,4 @@
 .facebookLogo {
 	height: 40px !important;
 	width: 40px !important;
-}
-
-.appleLogo {
-	height: 45px !important;
-	width: 45px !important;
-	padding-bottom: 5px;
 }

@@ -46,7 +46,6 @@ const UserInfo = () => {
 		}
 	};
 	microsoftEmailReformat();
-	console.log(user.email);
 
 	const logout = () => {
 		// first sign out of redux

@@ -3,6 +3,7 @@ import {
 	getAuth,
 	GoogleAuthProvider,
 	OAuthProvider,
+	GithubAuthProvider,
 } from 'firebase/auth';
 
 import { initializeApp } from 'firebase/app';
@@ -31,4 +32,12 @@ const facebookProvider = new FacebookAuthProvider();
 
 const microsoftProvider = new OAuthProvider('microsoft.com');
 
-export { googleProvider, facebookProvider, microsoftProvider, auth };
+const githubProvider = new GithubAuthProvider();
+
+export {
+	auth,
+	googleProvider,
+	facebookProvider,
+	microsoftProvider,
+	githubProvider,
+};

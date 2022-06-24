@@ -6,9 +6,10 @@ import { Fade } from 'react-reveal';
 import {
 	auth,
 	facebookProvider,
+	githubProvider,
 	googleProvider,
 	microsoftProvider,
-	provider,
+	twitterProvider,
 } from '../firebase';
 import {
 	GoogleAuthProvider,
@@ -19,7 +20,6 @@ import { useDispatch } from 'react-redux';
 // icons
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import AppleIcon from '@mui/icons-material/Apple';
 import { login } from '../features/userSlice';
 
 const Login = () => {
@@ -33,6 +33,7 @@ const Login = () => {
 	const darkMode = useSelector(selectTheme);
 
 	// functions
+	// login in with google
 	const loginWithGoogle = () => {
 		signInWithPopup(auth, googleProvider)
 			.then((result) => {
@@ -59,6 +60,7 @@ const Login = () => {
 			});
 	};
 
+	// login in with facebook
 	const loginWithFacebook = () => {
 		signInWithPopup(auth, facebookProvider)
 			.then((result) => {
@@ -89,6 +91,7 @@ const Login = () => {
 			});
 	};
 
+	// login in with microsoft
 	const loginWithMicrosoft = () => {
 		signInWithPopup(auth, microsoftProvider)
 			.then((result) => {
@@ -117,6 +120,33 @@ const Login = () => {
 		microsoftProvider.setCustomParameters({
 			tenant: '52237e8e-58c1-4715-9c0b-341df4360da0',
 		});
+	};
+
+	// login in with github
+	const loginWithGithub = () => {
+		signInWithPopup(auth, githubProvider)
+			.then((result) => {
+				// The signed-in user info.
+				const user = result.user;
+
+				// sending the data to redux
+				dispatch(
+					login({
+						signInProvider: result.providerId,
+						user: { name: user.displayName, email: user.email },
+					})
+				);
+			})
+			.catch((error) => {
+				// Handle Errors here.
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				// The email of the user's account used.
+				const email = error.customData.email;
+				// The AuthCredential type that was used.
+				const credential = GoogleAuthProvider.credentialFromError(error);
+				// ...
+			});
 	};
 
 	return (
@@ -239,9 +269,16 @@ const Login = () => {
 						/>
 					</div>
 
-					{/* apple */}
-					<div className={styles.auth}>
-						<AppleIcon className={`${styles.appleLogo} ${styles.authLogo}`} />
+					{/* github */}
+					<div className={styles.auth} onClick={loginWithGithub}>
+						<img
+							src={`assets/images/github-logo-${
+								darkMode ? 'light' : 'dark'
+							}.png`}
+							alt=''
+							className={styles.authLogo}
+							style={{ height: '60px', width: '60px' }}
+						/>
 					</div>
 				</div>
 			</div>
