@@ -3,18 +3,51 @@ import { useSelector } from 'react-redux';
 import { selectTheme } from '../features/darkModeSlice';
 import styles from '../styles/Login.module.css';
 import { Fade } from 'react-reveal';
+import { auth, provider } from '../firebase';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { useDispatch } from 'react-redux';
 // icons
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import AppleIcon from '@mui/icons-material/Apple';
+import { login } from '../features/userSlice';
 
 const Login = () => {
 	// state
 	const [isRememberMe, setIsRememberMe] = useState(false);
-	const [logininMethod, setLogininMethod] = useState('register');
+	const [logininMethod, setLogininMethod] = useState('login');
 
 	// redux
+	const dispatch = useDispatch();
+
 	const darkMode = useSelector(selectTheme);
+
+	// functions
+	const loginWithGoogle = () => {
+		signInWithPopup(auth, provider)
+			.then((result) => {
+				// The signed-in user info.
+				const user = result.user;
+
+				// sending the data to redux
+				dispatch(
+					login({
+						signInProvider: result.providerId,
+						user: { name: user.displayName, email: user.email },
+					})
+				);
+			})
+			.catch((error) => {
+				// Handle Errors here.
+				const errorCode = error.code;
+				const errorMessage = error.message;
+				// The email of the user's account used.
+				const email = error.customData.email;
+				// The AuthCredential type that was used.
+				const credential = GoogleAuthProvider.credentialFromError(error);
+				// ...
+			});
+	};
 
 	return (
 		// login
@@ -110,13 +143,14 @@ const Login = () => {
 				{/* auth login */}
 				<div className={styles.auths}>
 					{/* google */}
-					<div className={styles.auth}>
+					<div className={styles.auth} onClick={loginWithGoogle}>
 						<img
 							src='assets/images/google-logo.png'
 							alt=''
 							className={styles.authLogo}
 						/>
 					</div>
+
 					{/* facebook */}
 					<div className={styles.auth}>
 						<img
@@ -125,6 +159,7 @@ const Login = () => {
 							className={`${styles.facebookLogo} ${styles.authLogo}`}
 						/>
 					</div>
+
 					{/* microsoft */}
 					<div className={styles.auth}>
 						<img
@@ -133,6 +168,7 @@ const Login = () => {
 							className={styles.authLogo}
 						/>
 					</div>
+
 					{/* apple */}
 					<div className={styles.auth}>
 						<AppleIcon className={`${styles.appleLogo} ${styles.authLogo}`} />

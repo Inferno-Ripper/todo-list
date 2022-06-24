@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './styles/App.module.css';
 import { useSelector } from 'react-redux';
 import { selectTheme } from './features/darkModeSlice';
@@ -9,18 +9,38 @@ import Todo from './components/Todo';
 import TodosInfo from './components/TodosInfo';
 import TodosSort from './components/TodosSort';
 import { seletIsModalOpen } from './features/modalSlice';
-import { selectIsUserLoggedIn } from './features/userSlice';
+import { login, selectIsUserLoggedIn } from './features/userSlice';
 import Login from './components/Login';
 import Header from './components/Header';
+import { onAuthStateChanged } from 'firebase/auth';
+import { useDispatch } from 'react-redux';
+import { auth } from './firebase';
 
 function App() {
 	// state
 	const [todos, setTodos] = useState([]);
 
 	// redux
+	const dispatch = useDispatch();
+
 	const darkMode = useSelector(selectTheme);
 	const isModalOpen = useSelector(seletIsModalOpen);
 	const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
+
+	// useEffect
+	useEffect(() => {
+		// on reload it checks if the client has previously logged in, if true then client is automatically logged in to that account
+		onAuthStateChanged(auth, (user) => {
+			if (user) {
+				dispatch(
+					login({
+						signInProvider: user.providerData[0].providerId,
+						user: { name: user.displayName, email: user.email },
+					})
+				);
+			}
+		});
+	}, []);
 
 	// functions
 	// drag and drop animation
