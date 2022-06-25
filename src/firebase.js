@@ -31,6 +31,10 @@ const googleProvider = new GoogleAuthProvider();
 const facebookProvider = new FacebookAuthProvider();
 
 const microsoftProvider = new OAuthProvider('microsoft.com');
+// microsoft auth sign in doesn't work without using this
+microsoftProvider.setCustomParameters({
+	tenant: '52237e8e-58c1-4715-9c0b-341df4360da0',
+});
 
 const githubProvider = new GithubAuthProvider();
 

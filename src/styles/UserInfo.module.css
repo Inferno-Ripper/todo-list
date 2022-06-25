@@ -8,6 +8,11 @@
 
 /* account icon */
 
+.accountIconPhoto {
+	height: 40px;
+	border-radius: 50%;
+}
+
 .accountIcon {
 	font-size: 40px !important;
 }

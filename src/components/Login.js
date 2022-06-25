@@ -9,7 +9,6 @@ import {
 	githubProvider,
 	googleProvider,
 	microsoftProvider,
-	twitterProvider,
 } from '../firebase';
 import {
 	GoogleAuthProvider,
@@ -34,17 +33,18 @@ const Login = () => {
 
 	// functions
 	// login in with google
-	const loginWithGoogle = () => {
-		signInWithPopup(auth, googleProvider)
+	const loginWithAuth = (provider) => {
+		signInWithPopup(auth, provider)
 			.then((result) => {
 				// The signed-in user info.
-				const user = result.user;
+				const { displayName, email, uid, photoURL } = result.user;
 
+				console.log(result.user);
 				// sending the data to redux
 				dispatch(
 					login({
 						signInProvider: result.providerId,
-						user: { name: user.displayName, email: user.email },
+						user: { name: displayName, email: email, photo: photoURL, id: uid },
 					})
 				);
 			})
@@ -57,95 +57,12 @@ const Login = () => {
 				// The AuthCredential type that was used.
 				const credential = GoogleAuthProvider.credentialFromError(error);
 				// ...
-			});
-	};
 
-	// login in with facebook
-	const loginWithFacebook = () => {
-		signInWithPopup(auth, facebookProvider)
-			.then((result) => {
-				// The signed-in user info.
-				const user = result._tokenResponse;
-
-				// sending the data to redux
-				dispatch(
-					login({
-						signInProvider: result.providerId,
-						user: {
-							name: user.displayName,
-							email: user.email,
-						},
-					})
-				);
-			})
-			.catch((error) => {
-				// Handle Errors here.
-				const errorCode = error.code;
-				const errorMessage = error.message;
-				// The email of the user's account used.
-				const email = error.customData.email;
-				// The AuthCredential type that was used.
-				const credential = GoogleAuthProvider.credentialFromError(error);
-				// ...
-				console.log(error);
-			});
-	};
-
-	// login in with microsoft
-	const loginWithMicrosoft = () => {
-		signInWithPopup(auth, microsoftProvider)
-			.then((result) => {
-				// The signed-in user info.
-				const user = result.user;
-
-				// sending the data to redux
-				dispatch(
-					login({
-						signInProvider: result.providerId,
-						user: { name: user.displayName, email: user.email },
-					})
-				);
-			})
-			.catch((error) => {
-				// Handle Errors here.
-				const errorCode = error.code;
-				const errorMessage = error.message;
-				// The email of the user's account used.
-				const email = error.customData.email;
-				// The AuthCredential type that was used.
-				const credential = GoogleAuthProvider.credentialFromError(error);
-				// ...
-			});
-
-		microsoftProvider.setCustomParameters({
-			tenant: '52237e8e-58c1-4715-9c0b-341df4360da0',
-		});
-	};
-
-	// login in with github
-	const loginWithGithub = () => {
-		signInWithPopup(auth, githubProvider)
-			.then((result) => {
-				// The signed-in user info.
-				const user = result.user;
-
-				// sending the data to redux
-				dispatch(
-					login({
-						signInProvider: result.providerId,
-						user: { name: user.displayName, email: user.email },
-					})
-				);
-			})
-			.catch((error) => {
-				// Handle Errors here.
-				const errorCode = error.code;
-				const errorMessage = error.message;
-				// The email of the user's account used.
-				const email = error.customData.email;
-				// The AuthCredential type that was used.
-				const credential = GoogleAuthProvider.credentialFromError(error);
-				// ...
+				if (errorCode === 'auth/account-exists-with-different-credential') {
+					console.log(
+						'account with the provided email already exists, please login to your account or use a different email.'
+					);
+				}
 			});
 	};
 
@@ -243,7 +160,10 @@ const Login = () => {
 				{/* auth login */}
 				<div className={styles.auths}>
 					{/* google */}
-					<div className={styles.auth} onClick={loginWithGoogle}>
+					<div
+						className={styles.auth}
+						onClick={() => loginWithAuth(googleProvider)}
+					>
 						<img
 							src='assets/images/google-logo.png'
 							alt=''
@@ -252,7 +172,10 @@ const Login = () => {
 					</div>
 
 					{/* facebook */}
-					<div className={styles.auth} onClick={loginWithFacebook}>
+					<div
+						className={styles.auth}
+						onClick={() => loginWithAuth(facebookProvider)}
+					>
 						<img
 							src='assets/images/facebook-logo.png'
 							alt=''
@@ -261,7 +184,10 @@ const Login = () => {
 					</div>
 
 					{/* microsoft */}
-					<div className={styles.auth} onClick={loginWithMicrosoft}>
+					<div
+						className={styles.auth}
+						onClick={() => loginWithAuth(microsoftProvider)}
+					>
 						<img
 							src='assets/images/microsoft-logo.png'
 							alt=''
@@ -270,7 +196,10 @@ const Login = () => {
 					</div>
 
 					{/* github */}
-					<div className={styles.auth} onClick={loginWithGithub}>
+					<div
+						className={styles.auth}
+						onClick={() => loginWithAuth(githubProvider)}
+					>
 						<img
 							src={`assets/images/github-logo-${
 								darkMode ? 'light' : 'dark'

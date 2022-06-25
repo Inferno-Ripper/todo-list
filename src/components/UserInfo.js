@@ -65,7 +65,12 @@ const UserInfo = () => {
 					} `}
 				>
 					{/* account icon */}
-					<PersonIcon className={styles.accountIcon} />
+
+					{user.photo ? (
+						<img src={user?.photo} alt='' className={styles.accountIconPhoto} />
+					) : (
+						<PersonIcon className={styles.accountIcon} />
+					)}
 
 					{/* container */}
 					<div className={styles.container}>
