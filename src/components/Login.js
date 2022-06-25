@@ -10,7 +10,13 @@ import {
 	googleProvider,
 	microsoftProvider,
 } from '../firebase';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import {
+	GoogleAuthProvider,
+	signInWithPopup,
+	createUserWithEmailAndPassword,
+	signInWithEmailAndPassword,
+	updateProfile,
+} from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 import { login } from '../features/userSlice';
 import { ToastContainer, toast } from 'react-toastify';
@@ -23,6 +29,9 @@ const Login = () => {
 	// state
 	const [isRememberMe, setIsRememberMe] = useState(false);
 	const [logininMethod, setLogininMethod] = useState('login');
+	const [userName, setUserName] = useState('');
+	const [userEmail, setUserEmail] = useState('');
+	const [userPassword, setUserPassword] = useState('');
 
 	// redux
 	const dispatch = useDispatch();
@@ -30,14 +39,13 @@ const Login = () => {
 	const darkMode = useSelector(selectTheme);
 
 	// functions
-	// login in with google
+	// login with auth providers: google,facebook,microsoft,github
 	const loginWithAuth = (provider) => {
 		signInWithPopup(auth, provider)
 			.then((result) => {
 				// The signed-in user info.
 				const { displayName, email, uid, photoURL } = result.user;
 
-				console.log(result.user);
 				// sending the data to redux
 				dispatch(
 					login({
@@ -76,11 +84,70 @@ const Login = () => {
 			});
 	};
 
+	// login with email and password
+	const loginWithEmailAndPassword = async (e) => {
+		e.preventDefault();
+
+		if (logininMethod === 'login') {
+			const result = await signInWithEmailAndPassword(
+				auth,
+				userEmail,
+				userPassword
+			);
+
+			// sending the data to redux
+			const { displayName, email, uid, photoURL } = result.user;
+
+			dispatch(
+				login({
+					signInProvider: result.user.providerData[0].providerId,
+					user: {
+						name: displayName,
+						email: email,
+						photo: photoURL,
+						id: uid,
+					},
+				})
+			);
+		} else if (logininMethod === 'register') {
+			try {
+				const user = await createUserWithEmailAndPassword(
+					auth,
+					userEmail,
+					userPassword
+				).then(() =>
+					updateProfile(auth.currentUser, { displayName: userName })
+				);
+
+				const { displayName, email, uid, photoURL } = auth.currentUser;
+
+				dispatch(
+					login({
+						signInProvider: auth.currentUser.providerData[0].providerId,
+						user: {
+							name: displayName,
+							email: email,
+							photo: photoURL,
+							id: uid,
+						},
+					})
+				);
+			} catch (error) {
+				console.log(error);
+			}
+		}
+	};
+
 	return (
 		//  login
 		<div className={`${styles.login} ${darkMode && styles['dark-login']}`}>
 			{/* react toastify animation */}
+
 			<ToastContainer
+				toastStyle={{
+					backgroundColor: darkMode ? '#222836' : '#fefefe',
+					color: darkMode ? 'white' : 'black',
+				}}
 				position='top-center'
 				autoClose={5000}
 				hideProgressBar={false}
@@ -126,18 +193,36 @@ const Login = () => {
 								<label htmlFor='name' className={styles.noselect}>
 									Name
 								</label>
-								<input type='text' className={styles.name} id='name' />
+								<input
+									type='text'
+									className={styles.name}
+									id='name'
+									value={userName}
+									onChange={(e) => setUserName(e.target.value)}
+								/>
 							</Fade>
 						)}
 						<label htmlFor='email' className={styles.noselect}>
 							Email
 						</label>
-						<input type='email' className={styles.password} id='email' />
+						<input
+							type='email'
+							className={styles.password}
+							id='email'
+							value={userEmail}
+							onChange={(e) => setUserEmail(e.target.value)}
+						/>
 
 						<label htmlFor='password' className={styles.noselect}>
 							Password
 						</label>
-						<input type='password' className={styles.password} id='password' />
+						<input
+							type='password'
+							className={styles.password}
+							id='password'
+							value={userPassword}
+							onChange={(e) => setUserPassword(e.target.value)}
+						/>
 					</div>
 
 					{logininMethod === 'login' && (
@@ -174,7 +259,10 @@ const Login = () => {
 					)}
 
 					{/* submit button */}
-					<button className={styles.submitBtn}>
+					<button
+						className={styles.submitBtn}
+						onClick={loginWithEmailAndPassword}
+					>
 						{logininMethod === 'login' ? 'Login' : 'Register'}
 					</button>
 				</form>

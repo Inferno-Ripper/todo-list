@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Zoom } from 'react-reveal';
 import { selectTheme } from '../features/darkModeSlice';
 import { selectSignInProvider, selectUser } from '../features/userSlice';
 import styles from '../styles/ChangePasswordModal.module.css';
+import { getAuth, updatePassword } from 'firebase/auth';
 
 const ChangePasswordModal = ({ setIsChangePasswordModalOpen }) => {
+	// state
+	const [oldPassword, setOldPassword] = useState('');
+	const [newPassword, setNewPassword] = useState('');
+
 	// redux selectors
 	const darkMode = useSelector(selectTheme);
 	const user = useSelector(selectUser);
@@ -14,6 +19,21 @@ const ChangePasswordModal = ({ setIsChangePasswordModalOpen }) => {
 	// functions
 	const changePassword = (e) => {
 		e.preventDefault();
+
+		const auth = getAuth();
+
+		// const newPassword = getASecureRandomPassword();
+
+		updatePassword(auth.currentUser, newPassword)
+			.then(() => {
+				// Update successful.
+				console.log('success');
+			})
+			.catch((error) => {
+				// An error ocurred
+				// ...
+				console.log(error);
+			});
 
 		setIsChangePasswordModalOpen(false);
 	};
@@ -38,19 +58,30 @@ const ChangePasswordModal = ({ setIsChangePasswordModalOpen }) => {
 			<Zoom>
 				{/* container */}
 				<form className={styles.container}>
-					{signInProvider === 'emailAndPassword' ? (
+					{signInProvider === 'password' ? (
 						<>
 							<div>
 								{/* password */}
 								<div className={styles.password}>
 									{/* form label */}
+									{/* old password field is not required to change password on firebase */}
 									<label htmlFor='old password'>Old Password</label>
-									<input type='password' id='old password' />
+									<input
+										type='password'
+										id='old password'
+										value={oldPassword}
+										onChange={(e) => setOldPassword(e.target.value)}
+									/>
 								</div>
 								<div className={styles.password}>
 									{/* form label */}
 									<label htmlFor='new password'>New Password</label>
-									<input type='password' id='new password' />
+									<input
+										type='password'
+										id='new password'
+										value={newPassword}
+										onChange={(e) => setNewPassword(e.target.value)}
+									/>
 								</div>
 							</div>
 
