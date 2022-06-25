@@ -28,19 +28,25 @@ function App() {
 	const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
 
 	// useEffect
-	// useEffect(() => {
-	// 	// on reload it checks if the client has previously logged in, if true then client is automatically logged in to that account
-	// 	onAuthStateChanged(auth, (user) => {
-	// 		if (user) {
-	// 			dispatch(
-	// 				login({
-	// 					signInProvider: user.providerData[0].providerId,
-	// 					user: { name: user.displayName, email: user.email },
-	// 				})
-	// 			);
-	// 		}
-	// 	});
-	// }, []);
+	useEffect(() => {
+		// on reload it checks if the client has previously logged in, if true then client is automatically logged in to that account
+		onAuthStateChanged(auth, (user) => {
+			if (user) {
+				const { displayName, email, uid, photoURL } = user;
+				dispatch(
+					login({
+						signInProvider: user.providerData[0].providerId,
+						user: {
+							name: displayName,
+							email: email,
+							photo: photoURL,
+							id: uid,
+						},
+					})
+				);
+			}
+		});
+	}, []);
 
 	// functions
 	// drag and drop animation

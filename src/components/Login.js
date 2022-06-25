@@ -16,6 +16,9 @@ import {
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
 	updateProfile,
+	setPersistence,
+	inMemoryPersistence,
+	browserLocalPersistence,
 } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 import { login } from '../features/userSlice';
@@ -27,7 +30,7 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 
 const Login = () => {
 	// state
-	const [isRememberMe, setIsRememberMe] = useState(false);
+	const [isRememberMe, setIsRememberMe] = useState(true);
 	const [logininMethod, setLogininMethod] = useState('login');
 	const [userName, setUserName] = useState('');
 	const [userEmail, setUserEmail] = useState('');
@@ -54,54 +57,20 @@ const Login = () => {
 
 	// login with auth providers: google,facebook,microsoft,github
 	const loginWithAuth = (provider) => {
-		signInWithPopup(auth, provider)
-			.then((result) => {
-				// The signed-in user info.
-				const { displayName, email, uid, photoURL } = result.user;
-
-				// sending the data to redux
-				dispatch(
-					login({
-						signInProvider: result.providerId,
-						user: { name: displayName, email: email, photo: photoURL, id: uid },
-					})
-				);
-			})
-			.catch((error) => {
-				// Handle Errors here.
-				const errorCode = error.code;
-				const errorMessage = error.message;
-				// The email of the user's account used.
-				const email = error.customData.email;
-				// The AuthCredential type that was used.
-				const credential = GoogleAuthProvider.credentialFromError(error);
-				// ...
-
-				if (errorCode === 'auth/account-exists-with-different-credential') {
-					toastErrorNotification(
-						'Account With The Provided Email Address Already Exists, Please Login To Your Account Or Use A Different Email Address.'
-					);
-				}
-			});
-	};
-
-	// login with email and password
-	const loginWithEmailAndPassword = (e) => {
-		e.preventDefault();
-
-		if (logininMethod === 'login') {
-			if (!userEmail || !userPassword) {
-				toastErrorNotification('Email And Password Are Required To Login');
-				return;
-			}
-			signInWithEmailAndPassword(auth, userEmail, userPassword)
+		// IF remember me checkbox is seleted the user will automatically logged in after refrest the web site ELSE IF remember me is false the user will not be automatically logged in after refresting the web site
+		setPersistence(
+			auth,
+			isRememberMe ? browserLocalPersistence : inMemoryPersistence
+		).then(() => {
+			signInWithPopup(auth, provider)
 				.then((result) => {
-					// sending the data to redux
+					// The signed-in user info.
 					const { displayName, email, uid, photoURL } = result.user;
 
+					// sending the data to redux
 					dispatch(
 						login({
-							signInProvider: result.user.providerData[0].providerId,
+							signInProvider: result.providerId,
 							user: {
 								name: displayName,
 								email: email,
@@ -112,16 +81,72 @@ const Login = () => {
 					);
 				})
 				.catch((error) => {
-					// IF usre does not exist provided email display an error notification
-					if (error.code === 'auth/user-not-found') {
-						toastErrorNotification('User Does Not Exist');
-					}
-					// ELSE IF password is wrond display an error notification
-					else if (error.code === 'auth/wrong-password') {
-						toastErrorNotification('Wrong Credentials');
+					// Handle Errors here.
+					const errorCode = error.code;
+					const errorMessage = error.message;
+					// The email of the user's account used.
+					const email = error.customData.email;
+					// The AuthCredential type that was used.
+					const credential = GoogleAuthProvider.credentialFromError(error);
+					// ...
+
+					if (errorCode === 'auth/account-exists-with-different-credential') {
+						toastErrorNotification(
+							'Account With The Provided Email Address Already Exists, Please Login To Your Account Or Use A Different Email Address.'
+						);
 					}
 				});
-		} else if (logininMethod === 'register') {
+		});
+	};
+
+	// login with email and password
+	const loginWithEmailAndPassword = (e) => {
+		e.preventDefault();
+
+		// IF the login method is LOGIN
+		if (logininMethod === 'login') {
+			if (!userEmail || !userPassword) {
+				toastErrorNotification('Email And Password Are Required To Login');
+				return;
+			}
+
+			// IF remember me checkbox is seleted the user will automatically logged in after refrest the web site ELSE IF remember me is false the user will not be automatically logged in after refresting the web site
+			setPersistence(
+				auth,
+				isRememberMe ? browserLocalPersistence : inMemoryPersistence
+			).then(() => {
+				return signInWithEmailAndPassword(auth, userEmail, userPassword)
+					.then((result) => {
+						// sending the data to redux
+						const { displayName, email, uid, photoURL } = result.user;
+
+						dispatch(
+							login({
+								signInProvider: result.user.providerData[0].providerId,
+								user: {
+									name: displayName,
+									email: email,
+									photo: photoURL,
+									id: uid,
+								},
+							})
+						);
+					})
+					.catch((error) => {
+						// IF usre does not exist provided email display an error notification
+						if (error.code === 'auth/user-not-found') {
+							toastErrorNotification('User Does Not Exist');
+						}
+						// ELSE IF password is wrond display an error notification
+						else if (error.code === 'auth/wrong-password') {
+							toastErrorNotification('Wrong Credentials');
+						}
+					});
+			});
+		}
+
+		// ELSE IF the login method is REGISTER
+		else if (logininMethod === 'register') {
 			if (!userName || !userEmail || !userPassword) {
 				toastErrorNotification(
 					'User Name, Email And Password Are Required To Login'
