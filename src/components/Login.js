@@ -10,16 +10,14 @@ import {
 	googleProvider,
 	microsoftProvider,
 } from '../firebase';
-import {
-	GoogleAuthProvider,
-	OAuthProvider,
-	signInWithPopup,
-} from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
+import { login } from '../features/userSlice';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // icons
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
-import { login } from '../features/userSlice';
 
 const Login = () => {
 	// state
@@ -59,16 +57,40 @@ const Login = () => {
 				// ...
 
 				if (errorCode === 'auth/account-exists-with-different-credential') {
-					console.log(
-						'account with the provided email already exists, please login to your account or use a different email.'
-					);
+					const notify = () =>
+						toast.error(
+							'Account With The Provided Email Address Already Exists, Please Login To Your Account Or Use A Different Email Address.',
+							{
+								position: 'top-center',
+								autoClose: 5000,
+								hideProgressBar: false,
+								closeOnClick: true,
+								pauseOnHover: true,
+								draggable: true,
+								progress: undefined,
+							}
+						);
+
+					notify();
 				}
 			});
 	};
 
 	return (
-		// login
+		//  login
 		<div className={`${styles.login} ${darkMode && styles['dark-login']}`}>
+			{/* react toastify animation */}
+			<ToastContainer
+				position='top-center'
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+			/>
 			{/* container */}
 			<div className={styles.container}>
 				{/* login method */}
