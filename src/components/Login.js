@@ -39,6 +39,19 @@ const Login = () => {
 	const darkMode = useSelector(selectTheme);
 
 	// functions
+	// react toastify animation
+	const toastErrorNotification = (message) => {
+		toast.error(message, {
+			position: 'top-center',
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+		});
+	};
+
 	// login with auth providers: google,facebook,microsoft,github
 	const loginWithAuth = (provider) => {
 		signInWithPopup(auth, provider)
@@ -65,57 +78,59 @@ const Login = () => {
 				// ...
 
 				if (errorCode === 'auth/account-exists-with-different-credential') {
-					const notify = () =>
-						toast.error(
-							'Account With The Provided Email Address Already Exists, Please Login To Your Account Or Use A Different Email Address.',
-							{
-								position: 'top-center',
-								autoClose: 5000,
-								hideProgressBar: false,
-								closeOnClick: true,
-								pauseOnHover: true,
-								draggable: true,
-								progress: undefined,
-							}
-						);
-
-					notify();
+					toastErrorNotification(
+						'Account With The Provided Email Address Already Exists, Please Login To Your Account Or Use A Different Email Address.'
+					);
 				}
 			});
 	};
 
 	// login with email and password
-	const loginWithEmailAndPassword = async (e) => {
+	const loginWithEmailAndPassword = (e) => {
 		e.preventDefault();
 
 		if (logininMethod === 'login') {
-			const result = await signInWithEmailAndPassword(
-				auth,
-				userEmail,
-				userPassword
-			);
+			if (!userEmail || !userPassword) {
+				toastErrorNotification('Email And Password Are Required To Login');
+				return;
+			}
+			signInWithEmailAndPassword(auth, userEmail, userPassword)
+				.then((result) => {
+					// sending the data to redux
+					const { displayName, email, uid, photoURL } = result.user;
 
-			// sending the data to redux
-			const { displayName, email, uid, photoURL } = result.user;
-
-			dispatch(
-				login({
-					signInProvider: result.user.providerData[0].providerId,
-					user: {
-						name: displayName,
-						email: email,
-						photo: photoURL,
-						id: uid,
-					},
+					dispatch(
+						login({
+							signInProvider: result.user.providerData[0].providerId,
+							user: {
+								name: displayName,
+								email: email,
+								photo: photoURL,
+								id: uid,
+							},
+						})
+					);
 				})
-			);
+				.catch((error) => {
+					// IF usre does not exist provided email display an error notification
+					if (error.code === 'auth/user-not-found') {
+						toastErrorNotification('User Does Not Exist');
+					}
+					// ELSE IF password is wrond display an error notification
+					else if (error.code === 'auth/wrong-password') {
+						toastErrorNotification('Wrong Credentials');
+					}
+				});
 		} else if (logininMethod === 'register') {
+			if (!userName || !userEmail || !userPassword) {
+				toastErrorNotification(
+					'User Name, Email And Password Are Required To Login'
+				);
+				return;
+			}
+
 			try {
-				const user = await createUserWithEmailAndPassword(
-					auth,
-					userEmail,
-					userPassword
-				).then(() =>
+				createUserWithEmailAndPassword(auth, userEmail, userPassword).then(() =>
 					updateProfile(auth.currentUser, { displayName: userName })
 				);
 
@@ -133,7 +148,22 @@ const Login = () => {
 					})
 				);
 			} catch (error) {
-				console.log(error);
+				// IF account already exists with the provided email display an error notification
+				if (error.code === 'auth/email-already-in-use') {
+					toastErrorNotification(
+						'Account With The Provided Email Address Already Exists, Please Login To Your Account Or Use A Different Email Address.'
+					);
+				}
+
+				// ELSE IF email is invalid display an error notification
+				else if (error.code === 'auth/invalid-email') {
+					toastErrorNotification('Email Address Is Invalid');
+				}
+
+				// ELSE IF password is less than 6 characters display an error notification
+				else if (error.code === 'auth/weak-password') {
+					toastErrorNotification('Password Must Be Greater Than 6 Characters');
+				}
 			}
 		}
 	};

@@ -6,7 +6,11 @@ import { selectSignInProvider, selectUser } from '../features/userSlice';
 import styles from '../styles/ChangePasswordModal.module.css';
 import { getAuth, updatePassword } from 'firebase/auth';
 
-const ChangePasswordModal = ({ setIsChangePasswordModalOpen }) => {
+const ChangePasswordModal = ({
+	setIsChangePasswordModalOpen,
+	passwordChangedNotification,
+	passwordNotChangedNotification,
+}) => {
 	// state
 	const [oldPassword, setOldPassword] = useState('');
 	const [newPassword, setNewPassword] = useState('');
@@ -19,23 +23,29 @@ const ChangePasswordModal = ({ setIsChangePasswordModalOpen }) => {
 	// functions
 	const changePassword = (e) => {
 		e.preventDefault();
-
 		const auth = getAuth();
 
-		// const newPassword = getASecureRandomPassword();
+		if (newPassword.length >= 6) {
+			updatePassword(auth.currentUser, newPassword)
+				.then(() => {
+					passwordChangedNotification();
 
-		updatePassword(auth.currentUser, newPassword)
-			.then(() => {
-				// Update successful.
-				console.log('success');
-			})
-			.catch((error) => {
-				// An error ocurred
-				// ...
-				console.log(error);
-			});
+					setIsChangePasswordModalOpen(false);
+				})
+				.catch((error) => {
+					passwordNotChangedNotification(
+						'Changing Password Requires Recent Login. Please Logout And Log Back Again To Change Your Password'
+					);
 
-		setIsChangePasswordModalOpen(false);
+					setIsChangePasswordModalOpen(false);
+				});
+		} else {
+			passwordNotChangedNotification(
+				'Password Must be Greater Than 6 Characters'
+			);
+
+			setIsChangePasswordModalOpen(false);
+		}
 	};
 	const closeModal = () => {
 		setIsChangePasswordModalOpen(false);
@@ -53,76 +63,70 @@ const ChangePasswordModal = ({ setIsChangePasswordModalOpen }) => {
 	signInProviderNamefunc();
 
 	return (
-		// modal
-		<div className={`${styles.modal} ${darkMode && styles['dark-modal']}`}>
-			<Zoom>
-				{/* container */}
-				<form className={styles.container}>
-					{signInProvider === 'password' ? (
-						<>
-							<div>
-								{/* password */}
-								<div className={styles.password}>
-									{/* form label */}
-									{/* old password field is not required to change password on firebase */}
-									<label htmlFor='old password'>Old Password</label>
-									<input
-										type='password'
-										id='old password'
-										value={oldPassword}
-										onChange={(e) => setOldPassword(e.target.value)}
-									/>
+		<>
+			{/* modal */}
+			<div className={`${styles.modal} ${darkMode && styles['dark-modal']}`}>
+				{/* react toastify animation */}
+
+				<Zoom>
+					{/* container */}
+					<form className={styles.container}>
+						{signInProvider === 'password' ? (
+							<>
+								<div>
+									{/* password */}
+
+									<div className={styles.password}>
+										{/* form label */}
+										<label htmlFor='new password'>New Password</label>
+										<input
+											type='password'
+											id='new password'
+											value={newPassword}
+											onChange={(e) => setNewPassword(e.target.value)}
+										/>
+									</div>
 								</div>
-								<div className={styles.password}>
-									{/* form label */}
-									<label htmlFor='new password'>New Password</label>
-									<input
-										type='password'
-										id='new password'
-										value={newPassword}
-										onChange={(e) => setNewPassword(e.target.value)}
-									/>
+
+								{/* submit button */}
+								<button
+									className={`${styles.btn} ${styles.submitBtn}`}
+									onClick={changePassword}
+								>
+									Submit
+								</button>
+							</>
+						) : (
+							// change text password
+							<div className={styles.changePasswordModal}>
+								<div>
+									<div className={styles.loginMethod}>
+										<span> Login Method:</span> <p>{signInProviderName}</p>
+									</div>
+									<p className={styles.loginMethodText}>
+										Password can only be changed if the login method is Email
+										and Password
+									</p>
 								</div>
+
+								{/* submit button */}
+								<button
+									className={`${styles.btn} ${styles.closeModalBtn}`}
+									onClick={changePassword}
+								>
+									Close
+								</button>
 							</div>
+						)}
 
-							{/* submit button */}
-							<button
-								className={`${styles.btn} ${styles.submitBtn}`}
-								onClick={changePassword}
-							>
-								Submit
-							</button>
-						</>
-					) : (
-						// change text password
-						<div className={styles.changePasswordModal}>
-							<div>
-								<div className={styles.loginMethod}>
-									<span> Login Method:</span> <p>{signInProviderName}</p>
-								</div>
-								<p className={styles.loginMethodText}>
-									Password can only be changed if the login method is Email and
-									Password
-								</p>
-							</div>
-
-							{/* submit button */}
-							<button
-								className={`${styles.btn} ${styles.closeModalBtn}`}
-								onClick={changePassword}
-							>
-								Close
-							</button>
-						</div>
-					)}
-
-					{/* close button */}
-					<h1 className={styles.closeBtn} onClick={closeModal}>
-						X
-					</h1>
-				</form>
-			</Zoom>
-		</div>
+						{/* close button */}
+						<h1 className={styles.closeBtn} onClick={closeModal}>
+							X
+						</h1>
+					</form>
+				</Zoom>
+			</div>
+		</>
 	);
 };
 

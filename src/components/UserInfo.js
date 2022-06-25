@@ -12,6 +12,7 @@ import {
 } from '../features/userSlice';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
+import { ToastContainer, toast } from 'react-toastify';
 
 // icons
 import PersonIcon from '@mui/icons-material/Person';
@@ -55,8 +56,49 @@ const UserInfo = () => {
 		signOut(auth);
 	};
 
+	// react toastify animation
+	const passwordChangedNotification = () => {
+		toast.success('Password Changed', {
+			position: 'top-right',
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+		});
+	};
+	const passwordNotChangedNotification = (errorMessage) => {
+		toast.error(errorMessage, {
+			position: 'top-right',
+			autoClose: 5000,
+			hideProgressBar: false,
+			closeOnClick: true,
+			pauseOnHover: true,
+			draggable: true,
+			progress: undefined,
+		});
+	};
+
 	return (
 		<>
+			<ToastContainer
+				toastStyle={{
+					backgroundColor: darkMode ? '#222836' : '#fefefe',
+					color: darkMode ? 'white' : 'black',
+					fontSize: '20px',
+				}}
+				position='top-right'
+				autoClose={5000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				rtl={false}
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+			/>
+
 			<div>
 				{/* user info */}
 				<div
@@ -87,6 +129,8 @@ const UserInfo = () => {
 				{isChangePasswordModalOpen && (
 					<ChangePasswordModal
 						setIsChangePasswordModalOpen={setIsChangePasswordModalOpen}
+						passwordChangedNotification={passwordChangedNotification}
+						passwordNotChangedNotification={passwordNotChangedNotification}
 					/>
 				)}
 			</div>
