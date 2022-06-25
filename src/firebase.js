@@ -5,18 +5,17 @@ import {
 	OAuthProvider,
 	GithubAuthProvider,
 } from 'firebase/auth';
-
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+// import('dotenv').config();
 
 const firebaseConfig = {
-	apiKey: 'AIzaSyD83jaL7imhcvccKhmV3-rufCBNlz4P03U',
-	authDomain: 'todo-list-79a3a.firebaseapp.com',
-	projectId: 'todo-list-79a3a',
-	storageBucket: 'todo-list-79a3a.appspot.com',
-	messagingSenderId: '46859315314',
-	appId: '1:46859315314:web:4a4ea2fdb73e0d25a0baeb',
-	measurementId: 'G-3NMBSCLW0K',
+	apiKey: process.env.REACT_APP_apiKey,
+	authDomain: process.env.REACT_APP_authDomain,
+	projectId: process.env.REACT_APP_projectId,
+	storageBucket: process.env.REACT_APP_storageBucket,
+	messagingSenderId: process.env.REACT_APP_messagingSenderId,
+	appId: process.env.REACT_APP_appId,
 };
 
 // init firebase

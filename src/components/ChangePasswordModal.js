@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Zoom } from 'react-reveal';
 import { selectTheme } from '../features/darkModeSlice';
-import { selectSignInProvider, selectUser } from '../features/userSlice';
+import { selectSignInProvider } from '../features/userSlice';
 import styles from '../styles/ChangePasswordModal.module.css';
 import { getAuth, updatePassword } from 'firebase/auth';
 
@@ -12,12 +12,10 @@ const ChangePasswordModal = ({
 	passwordNotChangedNotification,
 }) => {
 	// state
-	const [oldPassword, setOldPassword] = useState('');
 	const [newPassword, setNewPassword] = useState('');
 
 	// redux selectors
 	const darkMode = useSelector(selectTheme);
-	const user = useSelector(selectUser);
 	const signInProvider = useSelector(selectSignInProvider);
 
 	// functions

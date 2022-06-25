@@ -11,7 +11,6 @@ import {
 	microsoftProvider,
 } from '../firebase';
 import {
-	GoogleAuthProvider,
 	signInWithPopup,
 	createUserWithEmailAndPassword,
 	signInWithEmailAndPassword,
@@ -81,16 +80,7 @@ const Login = () => {
 					);
 				})
 				.catch((error) => {
-					// Handle Errors here.
-					const errorCode = error.code;
-					const errorMessage = error.message;
-					// The email of the user's account used.
-					const email = error.customData.email;
-					// The AuthCredential type that was used.
-					const credential = GoogleAuthProvider.credentialFromError(error);
-					// ...
-
-					if (errorCode === 'auth/account-exists-with-different-credential') {
+					if (error.code === 'auth/account-exists-with-different-credential') {
 						toastErrorNotification(
 							'Account With The Provided Email Address Already Exists, Please Login To Your Account Or Use A Different Email Address.'
 						);
