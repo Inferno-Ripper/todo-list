@@ -9,25 +9,31 @@ import Todo from './components/Todo';
 import TodosInfo from './components/TodosInfo';
 import TodosSort from './components/TodosSort';
 import { seletIsModalOpen } from './features/modalSlice';
-import { login, selectIsUserLoggedIn } from './features/userSlice';
+import { login, selectIsUserLoggedIn, selectUser } from './features/userSlice';
 import Login from './components/Login';
 import Header from './components/Header';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
-import { auth } from './firebase';
+import { auth, colRef } from './firebase';
+import { onSnapshot, orderBy, query, where } from 'firebase/firestore';
 
 function App() {
 	// state
 	const [todos, setTodos] = useState([]);
-
+	const [updatedTodos, setUpdatedTodos] = useState(null);
 	// redux
 	const dispatch = useDispatch();
 
 	const darkMode = useSelector(selectTheme);
 	const isModalOpen = useSelector(seletIsModalOpen);
 	const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
+	const user = useSelector(selectUser);
 
 	// useEffect
+	useEffect(() => {
+		setUpdatedTodos(todos);
+	}, [todos]);
+
 	useEffect(() => {
 		// on reload it checks if the client has previously logged in, if true then client is automatically logged in to that account
 		onAuthStateChanged(auth, (user) => {
@@ -44,21 +50,42 @@ function App() {
 						},
 					})
 				);
+
+				const q = query(
+					colRef,
+					where('userId', '==', user.uid),
+					orderBy('createdAt')
+				);
+
+				onSnapshot(q, (snapshot) => {
+					setTodos(
+						snapshot.docs.map((doc) => {
+							return { todoId: doc.id, data: doc.data() };
+						})
+					);
+				});
 			}
 		});
 	}, []);
 
 	// functions
 	// drag and drop animation
-	function handleOnDragEnd(result) {
+	const reorder = (tasks, sourceIndex, destinationIndex) => {
+		const result = [...tasks];
+		const [reordereditem] = result.splice(sourceIndex, 1);
+		result.splice(destinationIndex, 0, reordereditem);
+		return result;
+	};
+
+	const handleOnDragEnd = (result) => {
 		if (!result.destination) return;
-
-		const items = Array.from(todos);
-		const [reorderedItem] = items.splice(result.source.index, 1);
-		items.splice(result.destination.index, 0, reorderedItem);
-
-		setTodos(items);
-	}
+		// const items = Array.from(updatedTasks);
+		// const [reorderedItem] = items.splice(result.source.index, 1);
+		// items.splice(result.destination.index, 0, reorderedItem);
+		setUpdatedTodos((updatedTodos) =>
+			reorder(updatedTodos, result.source.index, result.destination.index)
+		);
+	};
 
 	return (
 		// IF the theme is set to dark then give the div dark-App className
@@ -87,12 +114,12 @@ function App() {
 											{...provided.droppableProps}
 											ref={provided.innerRef}
 										>
-											{todos.map(({ bodyText }, index) => {
+											{updatedTodos?.map(({ todoId, data }, index) => {
 												return (
 													<Draggable
-														key={index}
+														key={todoId}
 														index={index}
-														draggableId={`'${index}'`}
+														draggableId={todoId}
 														isDragDisabled={isModalOpen}
 													>
 														{(provided) => (
@@ -100,9 +127,11 @@ function App() {
 																{...provided.draggableProps}
 																{...provided.dragHandleProps}
 																ref={provided.innerRef}
+																{...provided.draggableProps}
+																{...provided.dragHandleProps}
 																className={styles.todo}
 															>
-																<Todo text={bodyText} />
+																<Todo data={data} todoId={todoId} />
 															</div>
 														)}
 													</Draggable>

@@ -10,10 +10,12 @@ import DoneIcon from '@mui/icons-material/Done';
 import DeleteIcon from '@mui/icons-material/Delete';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import EditIcon from '@mui/icons-material/Edit';
+import { colRef } from '../firebase';
+import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
 
-const Todo = ({ text }) => {
+const Todo = ({ todoId, data }) => {
 	// state
-	const [isDone, setIsDone] = useState(false);
+	const [editTodo, setEditTodo] = useState(false);
 
 	// redux
 	const dispatch = useDispatch();
@@ -23,19 +25,27 @@ const Todo = ({ text }) => {
 
 	// functions
 	const completeTodo = () => {
-		setIsDone((prev) => {
-			return !prev;
+		const docRef = doc(colRef, todoId);
+
+		updateDoc(docRef, {
+			isDone: data.isDone ? false : true,
 		});
 	};
 
 	const openModal = () => {
 		dispatch(
 			setModalData({
-				bodyText: text,
-				completeStatus: isDone,
-				todoId: '124',
+				bodyText: data.todo,
+				completeStatus: data.isDone,
+				todoId: todoId,
 			})
 		);
+	};
+
+	const deleteTodo = () => {
+		const docRef = doc(colRef, todoId);
+
+		deleteDoc(docRef);
 	};
 
 	return (
@@ -48,19 +58,19 @@ const Todo = ({ text }) => {
 						{/* completed circle */}
 						<div
 							className={`${styles.completedCircle} ${
-								isDone && styles.todoDone
+								data?.isDone && styles.todoDone
 							} `}
 						>
-							{isDone && <DoneIcon />}
+							{data?.isDone && <DoneIcon />}
 						</div>
 
 						{/* text */}
 						<p
-							className={`${isDone && styles.doneText} ${styles.text} ${
+							className={`${data?.isDone && styles.doneText} ${styles.text} ${
 								styles.noselect
 							}`}
 						>
-							{text}
+							{data?.todo}
 						</p>
 					</div>
 
@@ -69,7 +79,13 @@ const Todo = ({ text }) => {
 						{/* expand and edit icon */}
 
 						{/* edit icon  */}
-						<EditIcon className={styles.expandAndEditIcon} />
+						<EditIcon
+							className={styles.expandAndEditIcon}
+							onClick={() => {
+								openModal();
+								setEditTodo(true);
+							}}
+						/>
 
 						{/* expand icon */}
 						<OpenInFullIcon
@@ -78,13 +94,20 @@ const Todo = ({ text }) => {
 						/>
 
 						{/* delete icon */}
-						<DeleteIcon className={styles.deleteIcon} />
+						<DeleteIcon className={styles.deleteIcon} onClick={deleteTodo} />
 					</div>
 				</Fade>
 			</div>
 
 			{isModalOpen && (
-				<Modal key={text} isDone={isDone} completeTodo={completeTodo} />
+				<Modal
+					key={todoId}
+					completeTodo={completeTodo}
+					data={data}
+					editTodo={editTodo}
+					setEditTodo={setEditTodo}
+					deleteTodo={deleteTodo}
+				/>
 			)}
 		</>
 	);

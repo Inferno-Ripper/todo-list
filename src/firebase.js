@@ -6,7 +6,7 @@ import {
 	GithubAuthProvider,
 } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import { collection, getFirestore } from 'firebase/firestore';
 // import('dotenv').config();
 
 const firebaseConfig = {
@@ -25,6 +25,7 @@ initializeApp(firebaseConfig);
 const db = getFirestore();
 const auth = getAuth();
 
+// auth providers
 const googleProvider = new GoogleAuthProvider();
 
 const facebookProvider = new FacebookAuthProvider();
@@ -37,10 +38,14 @@ microsoftProvider.setCustomParameters({
 
 const githubProvider = new GithubAuthProvider();
 
+// database reference
+const colRef = collection(db, 'todos');
+
 export {
 	auth,
 	googleProvider,
 	facebookProvider,
 	microsoftProvider,
 	githubProvider,
+	colRef,
 };

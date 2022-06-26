@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectTheme } from '../features/darkModeSlice';
 import styles from '../styles/Modal.module.css';
@@ -9,8 +9,10 @@ import {
 } from '../features/modalSlice';
 // icons
 import EditIcon from '@mui/icons-material/Edit';
+import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { colRef } from '../firebase';
 
-const Modal = ({ completeTodo, isDone }) => {
+const Modal = ({ completeTodo, data, editTodo, setEditTodo }) => {
 	// redux
 	const dispatch = useDispatch();
 
@@ -18,8 +20,37 @@ const Modal = ({ completeTodo, isDone }) => {
 	const isModalOpen = useSelector(seletIsModalOpen);
 	const todoData = useSelector(seletModal);
 
+	// state
+	const [editedTodo, setEditedTodo] = useState(todoData.bodyText);
+
 	// functions
 	const closeModal = () => {
+		dispatch(closeModalRedux());
+	};
+
+	const editTodoFunction = () => {
+		if (!editedTodo) return;
+
+		setEditTodo((prev) => !prev);
+	};
+
+	const submitEditedTodo = (e) => {
+		e.preventDefault();
+
+		const docRef = doc(colRef, todoData.todoId);
+
+		updateDoc(docRef, {
+			todo: editedTodo,
+		});
+
+		dispatch(closeModalRedux());
+	};
+
+	const deleteTodoOnModal = () => {
+		const docRef = doc(colRef, todoData.todoId);
+
+		deleteDoc(docRef);
+
 		dispatch(closeModalRedux());
 	};
 
@@ -33,12 +64,12 @@ const Modal = ({ completeTodo, isDone }) => {
 			{/* header */}
 			<div className={styles.header}>
 				{/* complete status */}
-				<h1 className={styles.status}>{isDone ? 'Done' : 'Not Done'}</h1>
+				<h1 className={styles.status}>{data?.isDone ? 'Done' : 'Not Done'}</h1>
 
 				{/* complete status border */}
 				<p
 					className={` ${styles.statusBorder} ${
-						isDone ? styles.CompletedBorder : styles.NotCompletedBorder
+						data?.isDone ? styles.CompletedBorder : styles.NotCompletedBorder
 					}`}
 				></p>
 
@@ -50,12 +81,24 @@ const Modal = ({ completeTodo, isDone }) => {
 				{/* body */}
 				<div className={styles.body}>
 					{/* text */}
-					<p className={styles.text}>{todoData.bodyText}</p>
+					{editTodo ? (
+						<form onSubmit={submitEditedTodo}>
+							<input
+								className={styles.text}
+								value={editedTodo}
+								onChange={(e) => setEditedTodo(e.target.value)}
+							/>
+						</form>
+					) : (
+						<input disabled className={styles.text} value={todoData.bodyText} />
+					)}
 				</div>
 
 				{/* edit icon */}
-				<div className={styles.editIcon}>
-					<EditIcon style={{ fontSize: '25px' }} />
+				<div
+					className={`${styles.editIcon} ${editTodo && styles.editIconActive}`}
+				>
+					<EditIcon style={{ fontSize: '25px' }} onClick={editTodoFunction} />
 				</div>
 			</div>
 
@@ -63,16 +106,32 @@ const Modal = ({ completeTodo, isDone }) => {
 
 			<div className={styles.footer}>
 				{/* buttons */}
-				{/* complete button */}
-				<button
-					className={`${styles.completeBtn} ${styles.btn}`}
-					onClick={completeTodo}
-				>
-					{!isDone ? 'Complete' : 'Incomplete'}
-				</button>
+
+				{editTodo ? (
+					// edit button
+					<button
+						className={`${styles.submitBtn} ${styles.btn}`}
+						onClick={submitEditedTodo}
+					>
+						Submit
+					</button>
+				) : (
+					//  complete button
+					<button
+						className={`${styles.completeBtn} ${styles.btn}`}
+						onClick={completeTodo}
+					>
+						{!data?.isDone ? 'Complete' : 'Incomplete'}
+					</button>
+				)}
 
 				{/* delete button */}
-				<button className={`${styles.deleteBtn} ${styles.btn}`}>Delete</button>
+				<button
+					className={`${styles.deleteBtn} ${styles.btn}`}
+					onClick={deleteTodoOnModal}
+				>
+					Delete
+				</button>
 			</div>
 		</div>
 	);
