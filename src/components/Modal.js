@@ -3,16 +3,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectTheme } from '../features/darkModeSlice';
 import styles from '../styles/Modal.module.css';
 import {
+	changeModalCompleteStatus,
 	closeModalRedux,
 	seletIsModalOpen,
 	seletModal,
 } from '../features/modalSlice';
 // icons
 import EditIcon from '@mui/icons-material/Edit';
-import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import { deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { colRef } from '../firebase';
 
-const Modal = ({ completeTodo, data, editTodo, setEditTodo }) => {
+const Modal = ({ completeTodo, data, editTodo, setEditTodo, todoId }) => {
 	// redux
 	const dispatch = useDispatch();
 
@@ -37,7 +38,7 @@ const Modal = ({ completeTodo, data, editTodo, setEditTodo }) => {
 	const submitEditedTodo = (e) => {
 		e.preventDefault();
 
-		const docRef = doc(colRef, todoData.todoId);
+		const docRef = doc(colRef, todoData?.todoId);
 
 		updateDoc(docRef, {
 			todo: editedTodo,
@@ -47,11 +48,25 @@ const Modal = ({ completeTodo, data, editTodo, setEditTodo }) => {
 	};
 
 	const deleteTodoOnModal = () => {
-		const docRef = doc(colRef, todoData.todoId);
+		const docRef = doc(colRef, todoData?.todoId);
 
 		deleteDoc(docRef);
 
 		dispatch(closeModalRedux());
+	};
+
+	const completedTodoOnModal = () => {
+		const docRef = doc(colRef, todoData?.todoId);
+
+		getDoc(docRef).then((doc) => {
+			dispatch(changeModalCompleteStatus(doc.data().isDone));
+		});
+
+		updateDoc(docRef, {
+			isDone: todoData?.completeStatus ? false : true,
+		});
+
+		// dispatch(closeModalRedux());
 	};
 
 	return (
@@ -64,12 +79,16 @@ const Modal = ({ completeTodo, data, editTodo, setEditTodo }) => {
 			{/* header */}
 			<div className={styles.header}>
 				{/* complete status */}
-				<h1 className={styles.status}>{data?.isDone ? 'Done' : 'Not Done'}</h1>
+				<h1 className={styles.status}>
+					{todoData?.completeStatus ? 'Done' : 'Not Done'}
+				</h1>
 
 				{/* complete status border */}
 				<p
 					className={` ${styles.statusBorder} ${
-						data?.isDone ? styles.CompletedBorder : styles.NotCompletedBorder
+						todoData?.completeStatus
+							? styles.CompletedBorder
+							: styles.NotCompletedBorder
 					}`}
 				></p>
 
@@ -119,9 +138,9 @@ const Modal = ({ completeTodo, data, editTodo, setEditTodo }) => {
 					//  complete button
 					<button
 						className={`${styles.completeBtn} ${styles.btn}`}
-						onClick={completeTodo}
+						onClick={completedTodoOnModal}
 					>
-						{!data?.isDone ? 'Complete' : 'Incomplete'}
+						{!todoData?.completeStatus ? 'Complete' : 'Incomplete'}
 					</button>
 				)}
 

@@ -7,7 +7,6 @@ import {
 } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
 import { collection, getFirestore } from 'firebase/firestore';
-// import('dotenv').config();
 
 const firebaseConfig = {
 	apiKey: process.env.REACT_APP_apiKey,

@@ -23,6 +23,10 @@ const modalSlice = createSlice({
 			state.todoData.bodyText = bodyText;
 		},
 
+		changeModalCompleteStatus: (state, { payload }) => {
+			state.todoData.completeStatus = payload;
+		},
+
 		openModalRedux: (state) => {
 			state.isModalOpen = true;
 		},
@@ -33,8 +37,12 @@ const modalSlice = createSlice({
 	},
 });
 
-export const { setModalData, openModalRedux, closeModalRedux } =
-	modalSlice.actions;
+export const {
+	setModalData,
+	openModalRedux,
+	closeModalRedux,
+	changeModalCompleteStatus,
+} = modalSlice.actions;
 
 export const seletIsModalOpen = (state) => state.modal.isModalOpen;
 export const seletModal = (state) => state.modal.todoData;

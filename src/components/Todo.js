@@ -11,9 +11,18 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 import EditIcon from '@mui/icons-material/Edit';
 import { colRef } from '../firebase';
-import { deleteDoc, doc, updateDoc } from 'firebase/firestore';
+import {
+	deleteDoc,
+	doc,
+	onSnapshot,
+	query,
+	updateDoc,
+	where,
+} from 'firebase/firestore';
+import { addTodos } from '../features/todosSlice';
+import { selectUser } from '../features/userSlice';
 
-const Todo = ({ todoId, data }) => {
+const Todo = ({ todoId, data, sort }) => {
 	// state
 	const [editTodo, setEditTodo] = useState(false);
 
@@ -22,6 +31,7 @@ const Todo = ({ todoId, data }) => {
 
 	const darkMode = useSelector(selectTheme);
 	const isModalOpen = useSelector(seletIsModalOpen);
+	const user = useSelector(selectUser);
 
 	// functions
 	const completeTodo = () => {
@@ -30,6 +40,55 @@ const Todo = ({ todoId, data }) => {
 		updateDoc(docRef, {
 			isDone: data.isDone ? false : true,
 		});
+
+		if (sort === 'getAll') {
+			// get all Active Todos, todos added by the current user and sort them by the time they were added / ascending order
+			const q = query(colRef, where('userId', '==', user?.id));
+
+			onSnapshot(q, (snapshot) => {
+				dispatch(
+					addTodos(
+						snapshot.docs.map((doc) => {
+							return { todoId: doc.id, data: doc.data() };
+						})
+					)
+				);
+			});
+		} else if (sort === 'getActive') {
+			// get all Active Todos, todos added by the current user and sort them by the time they were added / ascending order
+			const q = query(
+				colRef,
+				where('userId', '==', user?.id),
+				where('isDone', '==', false)
+			);
+
+			onSnapshot(q, (snapshot) => {
+				dispatch(
+					addTodos(
+						snapshot.docs.map((doc) => {
+							return { todoId: doc.id, data: doc.data() };
+						})
+					)
+				);
+			});
+		} else if (sort === 'getCompleted') {
+			// get all Active Todos, todos added by the current user and sort them by the time they were added / ascending order
+			const q = query(
+				colRef,
+				where('userId', '==', user?.id),
+				where('isDone', '==', true)
+			);
+
+			onSnapshot(q, (snapshot) => {
+				dispatch(
+					addTodos(
+						snapshot.docs.map((doc) => {
+							return { todoId: doc.id, data: doc.data() };
+						})
+					)
+				);
+			});
+		}
 	};
 
 	const openModal = () => {
@@ -102,6 +161,7 @@ const Todo = ({ todoId, data }) => {
 			{isModalOpen && (
 				<Modal
 					key={todoId}
+					todoId={todoId}
 					completeTodo={completeTodo}
 					data={data}
 					editTodo={editTodo}

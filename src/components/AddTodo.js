@@ -34,6 +34,9 @@ const AddTodo = ({ setTodos }) => {
 	const addTodoToDb = (e) => {
 		e.preventDefault();
 
+		// 	// IF input is empty Then don't add a todo
+		if (!newTodo) return;
+
 		addDoc(colRef, {
 			userId: user.id,
 			todo: newTodo,

@@ -16,23 +16,27 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
 import { auth, colRef } from './firebase';
 import { onSnapshot, orderBy, query, where } from 'firebase/firestore';
+import { addTodos, selectTodosList } from './features/todosSlice';
 
 function App() {
 	// state
-	const [todos, setTodos] = useState([]);
+	// const [todos, setTodos] = useState([]);
 	const [updatedTodos, setUpdatedTodos] = useState(null);
+	const [sort, setSort] = useState('getAll');
+
 	// redux
 	const dispatch = useDispatch();
 
 	const darkMode = useSelector(selectTheme);
 	const isModalOpen = useSelector(seletIsModalOpen);
 	const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
+	const todosList = useSelector(selectTodosList);
 	const user = useSelector(selectUser);
 
 	// useEffect
 	useEffect(() => {
-		setUpdatedTodos(todos);
-	}, [todos]);
+		setUpdatedTodos(todosList);
+	}, [todosList]);
 
 	useEffect(() => {
 		// on reload it checks if the client has previously logged in, if true then client is automatically logged in to that account
@@ -50,22 +54,24 @@ function App() {
 						},
 					})
 				);
+			}
+		});
+	}, []);
 
-				const q = query(
-					colRef,
-					where('userId', '==', user.uid),
-					orderBy('createdAt')
-				);
+	useEffect(() => {
+		if (user) {
+			const q = query(colRef, where('userId', '==', user?.id));
 
-				onSnapshot(q, (snapshot) => {
-					setTodos(
+			onSnapshot(q, (snapshot) => {
+				dispatch(
+					addTodos(
 						snapshot.docs.map((doc) => {
 							return { todoId: doc.id, data: doc.data() };
 						})
-					);
-				});
-			}
-		});
+					)
+				);
+			});
+		}
 	}, []);
 
 	// functions
@@ -87,6 +93,8 @@ function App() {
 		);
 	};
 
+	// console.log(updatedTodos);
+
 	return (
 		// IF the theme is set to dark then give the div dark-App className
 		<div className={`${styles.app} ${darkMode && styles['dark-app']}`}>
@@ -100,11 +108,11 @@ function App() {
 				<div className={styles.content}>
 					{/* add a new todo  */}
 					<div>
-						<AddTodo todos={todos} setTodos={setTodos} />
+						<AddTodo />
 					</div>
 
 					{/* todo list */}
-					<Fade when={todos.length > 0}>
+					<Fade>
 						<div className={styles.todoList}>
 							<DragDropContext onDragEnd={handleOnDragEnd}>
 								<Droppable droppableId='Todos List'>
@@ -131,7 +139,7 @@ function App() {
 																{...provided.dragHandleProps}
 																className={styles.todo}
 															>
-																<Todo data={data} todoId={todoId} />
+																<Todo data={data} todoId={todoId} sort={sort} />
 															</div>
 														)}
 													</Draggable>
@@ -145,12 +153,12 @@ function App() {
 							</DragDropContext>
 
 							{/* todo info */}
-							<TodosInfo todos={todos} />
+							<TodosInfo sort={sort} setSort={setSort} />
 						</div>
 
 						{/* todo sort */}
 						<div className={styles.todosSort}>
-							<TodosSort />
+							<TodosSort sort={sort} setSort={setSort} />
 						</div>
 					</Fade>
 				</div>
