@@ -68,6 +68,7 @@ const UserInfo = () => {
 			progress: undefined,
 		});
 	};
+
 	const passwordNotChangedNotification = (errorMessage) => {
 		toast.error(errorMessage, {
 			position: 'top-right',
@@ -89,7 +90,7 @@ const UserInfo = () => {
 					fontSize: '20px',
 				}}
 				position='top-right'
-				autoClose={5000}
+				autoClose={3000}
 				hideProgressBar={false}
 				newestOnTop={false}
 				closeOnClick
@@ -108,8 +109,10 @@ const UserInfo = () => {
 				>
 					{/* account icon */}
 
+					{/* <PersonIcon src={user?.photo} className={styles.accountIcon} /> */}
+
 					{user.photo ? (
-						<img src={user?.photo} alt='' className={styles.accountIconPhoto} />
+						<img src={user.photo} alt='' className={styles.accountIconPhoto} />
 					) : (
 						<PersonIcon className={styles.accountIcon} />
 					)}

@@ -45,7 +45,7 @@ const Login = () => {
 	const toastErrorNotification = (message) => {
 		toast.error(message, {
 			position: 'top-center',
-			autoClose: 5000,
+			autoClose: 3000,
 			hideProgressBar: false,
 			closeOnClick: true,
 			pauseOnHover: true,
@@ -194,7 +194,7 @@ const Login = () => {
 					color: darkMode ? 'white' : 'black',
 				}}
 				position='top-center'
-				autoClose={5000}
+				autoClose={3000}
 				hideProgressBar={false}
 				newestOnTop={false}
 				closeOnClick
@@ -360,7 +360,7 @@ const Login = () => {
 								darkMode ? 'light' : 'dark'
 							}.png`}
 							alt=''
-							className={styles.authLogo}
+							className={styles.githubLogo}
 							style={{ height: '60px', width: '60px' }}
 						/>
 					</div>

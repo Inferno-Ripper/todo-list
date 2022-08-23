@@ -2,9 +2,10 @@
 
 .todo {
 	width: 100%;
-	height: 70px;
+	height: 40px;
 	display: flex;
 	align-items: center;
+	gap: 15px;
 	justify-content: space-between;
 	transition: all 250ms ease-in-out;
 	cursor: pointer;
@@ -37,15 +38,17 @@
 	align-items: center;
 	gap: 15px;
 	padding-left: 10px;
-	width: 400px;
-	flex: 1;
+	width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 /* completed circle */
 
 .completedCircle {
-	height: 25px;
-	width: 28px;
+	height: 15px;
+	min-width: 15px;
 	border-radius: 50%;
 	display: flex;
 	align-items: center;
@@ -57,12 +60,8 @@
 	margin-top: 5px;
 }
 
-@media (min-width: 1024px) {
-	.completedCircle {
-		width: 32px;
-		border-radius: 100%;
-		height: 30px;
-	}
+.completedCircle > * {
+	font-size: 15px !important;
 }
 
 .dark-todo .completedCircle {
@@ -100,11 +99,10 @@
 /* text */
 
 .text {
-	font-size: 25px;
+	font-size: 14px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	width: 100%;
 }
 
 .doneText {
@@ -121,24 +119,18 @@
 	padding-right: 10px;
 }
 
-/* expand and edit icon */
-
-.expandAndEditIcon {
-	opacity: 0;
-}
-
-.todo:hover .expandAndEditIcon {
-	opacity: 1;
-}
-
 .expandAndEditIcon:hover {
 	color: #3d62ba;
+}
+
+.expandAndEditIcon {
+	font-size: 15px !important;
 }
 
 /* delete icon  */
 
 .deleteIcon {
-	font-size: 30px !important;
+	font-size: 15px !important;
 	cursor: pointer;
 }
 
@@ -148,4 +140,87 @@
 
 .deleteIcon:hover {
 	color: rgb(138, 5, 5) !important;
+}
+
+@media (min-width: 640px) {
+	.todo {
+		height: 50px;
+	}
+
+	.completedCircle {
+		height: 20px;
+		min-width: 20px;
+	}
+
+	.completedCircle > * {
+		font-size: 18px !important;
+	}
+
+	.text {
+		font-size: 18px;
+	}
+
+	.deleteIcon {
+		font-size: 20px !important;
+	}
+
+	/* expand and edit icon */
+	.expandAndEditIcon {
+		opacity: 0;
+	}
+
+	.todo:hover .expandAndEditIcon {
+		opacity: 1;
+	}
+
+	.expandAndEditIcon {
+		font-size: 20px !important;
+	}
+}
+
+@media (min-width: 1024px) {
+	.todo {
+		height: 70px;
+	}
+
+	.completedCircle {
+		height: 25px;
+		min-width: 25px;
+	}
+
+	.completedCircle > * {
+		font-size: 20px !important;
+	}
+
+	.text {
+		font-size: 20px;
+	}
+
+	.deleteIcon {
+		font-size: 30px !important;
+	}
+
+	/* expand and edit icon */
+	.expandAndEditIcon {
+		opacity: 0;
+	}
+
+	.todo:hover .expandAndEditIcon {
+		opacity: 1;
+	}
+
+	.expandAndEditIcon {
+		font-size: 30px !important;
+	}
+}
+
+@media (min-width: 1024px) {
+	.completedCircle {
+		min-width: 30px;
+		height: 30px;
+	}
+
+	.completedCircle > * {
+		font-size: 25px !important;
+	}
 }

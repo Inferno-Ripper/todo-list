@@ -44,7 +44,7 @@ export const {
 	changeModalCompleteStatus,
 } = modalSlice.actions;
 
-export const seletIsModalOpen = (state) => state.modal.isModalOpen;
-export const seletModal = (state) => state.modal.todoData;
+export const selectIsModalOpen = (state) => state.modal.isModalOpen;
+export const selectModal = (state) => state.modal.todoData;
 
 export default modalSlice.reducer;

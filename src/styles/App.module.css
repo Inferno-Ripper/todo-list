@@ -1,7 +1,7 @@
 .app {
 	display: flex;
 	align-items: center;
-	justify-content: center;
+	padding-top: 50px;
 	flex-direction: column;
 	height: 100vh;
 	width: 100vw;
@@ -19,7 +19,7 @@
 /* content */
 
 .content {
-	height: 70vh;
+	padding-top: 50px;
 	width: 80vw;
 	display: flex;
 	flex-direction: column;
@@ -31,7 +31,6 @@
 @media (min-width: 1024px) {
 	.content {
 		width: 50vw;
-		margin-top: -50px;
 	}
 }
 
@@ -39,10 +38,18 @@
 
 .todosContainer {
 	height: auto;
-	max-height: 48vh;
+	max-height: 38vh;
 	overflow: scroll;
 	border-radius: 7px;
 	z-index: 10 !important;
+}
+
+@media (min-width: 640px) {
+	.todosContainer {
+		max-height: 48vh;
+		overflow: scroll;
+		border-radius: 7px;
+	}
 }
 
 @media (min-width: 1024px) {
@@ -50,6 +57,12 @@
 		max-height: 63vh;
 		overflow: scroll;
 		border-radius: 7px;
+	}
+
+	@-moz-document url-prefix() {
+		.todosContainer {
+			max-height: 53vh;
+		}
 	}
 }
 

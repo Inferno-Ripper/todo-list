@@ -2,41 +2,33 @@ import { useEffect, useState } from 'react';
 import styles from './styles/App.module.css';
 import { useSelector } from 'react-redux';
 import { selectTheme } from './features/darkModeSlice';
-import { Fade } from 'react-reveal';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import { Bounce, Fade, Flip, Slide, Zoom } from 'react-reveal';
 import AddTodo from './components/AddTodo';
 import Todo from './components/Todo';
 import TodosInfo from './components/TodosInfo';
 import TodosSort from './components/TodosSort';
-import { seletIsModalOpen } from './features/modalSlice';
 import { login, selectIsUserLoggedIn, selectUser } from './features/userSlice';
 import Login from './components/Login';
 import Header from './components/Header';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useDispatch } from 'react-redux';
-import { auth, colRef } from './firebase';
-import { onSnapshot, orderBy, query, where } from 'firebase/firestore';
-import { addTodos, selectTodosList } from './features/todosSlice';
+import { auth } from './firebase';
+import { selectAllTodos, selectTodosList } from './features/todosSlice';
+import { selectIsModalOpen } from './features/modalSlice';
+import Modal from './components/Modal';
 
 function App() {
 	// state
-	// const [todos, setTodos] = useState([]);
-	const [updatedTodos, setUpdatedTodos] = useState(null);
 	const [sort, setSort] = useState('getAll');
 
 	// redux
 	const dispatch = useDispatch();
 
 	const darkMode = useSelector(selectTheme);
-	const isModalOpen = useSelector(seletIsModalOpen);
 	const isUserLoggedIn = useSelector(selectIsUserLoggedIn);
 	const todosList = useSelector(selectTodosList);
-	const user = useSelector(selectUser);
-
-	// useEffect
-	useEffect(() => {
-		setUpdatedTodos(todosList);
-	}, [todosList]);
+	const allTodos = useSelector(selectAllTodos);
+	const isModalOpen = useSelector(selectIsModalOpen);
 
 	useEffect(() => {
 		// on reload it checks if the client has previously logged in, if true then client is automatically logged in to that account
@@ -58,43 +50,6 @@ function App() {
 		});
 	}, []);
 
-	useEffect(() => {
-		if (user) {
-			const q = query(colRef, where('userId', '==', user?.id));
-
-			onSnapshot(q, (snapshot) => {
-				dispatch(
-					addTodos(
-						snapshot.docs.map((doc) => {
-							return { todoId: doc.id, data: doc.data() };
-						})
-					)
-				);
-			});
-		}
-	}, []);
-
-	// functions
-	// drag and drop animation
-	const reorder = (tasks, sourceIndex, destinationIndex) => {
-		const result = [...tasks];
-		const [reordereditem] = result.splice(sourceIndex, 1);
-		result.splice(destinationIndex, 0, reordereditem);
-		return result;
-	};
-
-	const handleOnDragEnd = (result) => {
-		if (!result.destination) return;
-		// const items = Array.from(updatedTasks);
-		// const [reorderedItem] = items.splice(result.source.index, 1);
-		// items.splice(result.destination.index, 0, reorderedItem);
-		setUpdatedTodos((updatedTodos) =>
-			reorder(updatedTodos, result.source.index, result.destination.index)
-		);
-	};
-
-	// console.log(updatedTodos);
-
 	return (
 		// IF the theme is set to dark then give the div dark-App className
 		<div className={`${styles.app} ${darkMode && styles['dark-app']}`}>
@@ -112,45 +67,15 @@ function App() {
 					</div>
 
 					{/* todo list */}
-					<Fade>
+					<Fade bottom when={allTodos.length > 0}>
 						<div className={styles.todoList}>
-							<DragDropContext onDragEnd={handleOnDragEnd}>
-								<Droppable droppableId='Todos List'>
-									{(provided) => (
-										<div
-											className={styles.todosContainer}
-											{...provided.droppableProps}
-											ref={provided.innerRef}
-										>
-											{updatedTodos?.map(({ todoId, data }, index) => {
-												return (
-													<Draggable
-														key={todoId}
-														index={index}
-														draggableId={todoId}
-														isDragDisabled={isModalOpen}
-													>
-														{(provided) => (
-															<div
-																{...provided.draggableProps}
-																{...provided.dragHandleProps}
-																ref={provided.innerRef}
-																{...provided.draggableProps}
-																{...provided.dragHandleProps}
-																className={styles.todo}
-															>
-																<Todo data={data} todoId={todoId} sort={sort} />
-															</div>
-														)}
-													</Draggable>
-												);
-											})}
-
-											{provided.placeholder}
-										</div>
-									)}
-								</Droppable>
-							</DragDropContext>
+							<div className={styles.todosContainer}>
+								{todosList?.map(({ todoId, data }) => (
+									<div key={todoId} className={styles.todo}>
+										<Todo data={data} todoId={todoId} sort={sort} />
+									</div>
+								))}
+							</div>
 
 							{/* todo info */}
 							<TodosInfo sort={sort} setSort={setSort} />
@@ -163,6 +88,8 @@ function App() {
 					</Fade>
 				</div>
 			)}
+
+			{isModalOpen && <Modal />}
 		</div>
 	);
 }

@@ -4,7 +4,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-around;
-	height: 70px;
+	height: 40px;
 	position: sticky;
 	width: 100%;
 	bottom: 0;
@@ -13,6 +13,30 @@
 	background-color: white;
 	border-top: 1px solid #dcdbdb;
 	color: gray;
+}
+
+.todosInfo > p {
+	font-size: 12px !important;
+}
+
+@media (min-width: 640px) {
+	.todosInfo {
+		height: 50px;
+	}
+
+	.todosInfo > p {
+		font-size: 16px !important;
+	}
+}
+
+@media (min-width: 1024px) {
+	.todosInfo {
+		height: 70px;
+	}
+
+	.todosInfo > p {
+		font-size: 16px !important;
+	}
 }
 
 .dark-todosInfo {

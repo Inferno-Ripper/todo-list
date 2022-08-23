@@ -8,7 +8,7 @@ import { colRef } from '../firebase';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { selectUser } from '../features/userSlice';
 
-const AddTodo = ({ setTodos }) => {
+const AddTodo = () => {
 	// state
 	const [newTodo, setNewTodo] = useState('');
 
@@ -17,19 +17,6 @@ const AddTodo = ({ setTodos }) => {
 	const user = useSelector(selectUser);
 
 	// functions
-	// const addNewTodo = (e) => {
-	// 	e.preventDefault();
-
-	// 	// IF input is empty Then don't add a todo
-	// 	if (!newTodo) return;
-
-	// 	setTodos((prevValue) => [
-	// 		...prevValue,
-	// 		{ bodyText: newTodo, completeStatus: false, todoId: '123' },
-	// 	]);
-
-	// 	setNewTodo('');
-	// };
 
 	const addTodoToDb = (e) => {
 		e.preventDefault();
@@ -68,9 +55,9 @@ const AddTodo = ({ setTodos }) => {
 				</button>
 
 				{/* add icon */}
-				<div className={styles.addIcon}>
-					<AddCircleIcon onClick={addTodoToDb} />
-				</div>
+				{/* <div> */}
+				<AddCircleIcon onClick={addTodoToDb} className={styles.addIcon} />
+				{/* </div> */}
 			</form>
 		</div>
 	);

@@ -5,21 +5,26 @@ import styles from '../styles/Modal.module.css';
 import {
 	changeModalCompleteStatus,
 	closeModalRedux,
-	seletIsModalOpen,
-	seletModal,
+	selectIsModalOpen,
+	selectModal,
 } from '../features/modalSlice';
 // icons
 import EditIcon from '@mui/icons-material/Edit';
 import { deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { colRef } from '../firebase';
+import { toast } from 'react-toastify';
+import { Bounce, Fade, Zoom } from 'react-reveal';
 
-const Modal = ({ completeTodo, data, editTodo, setEditTodo, todoId }) => {
+const Modal = () => {
+	// state
+	const [editTodo, setEditTodo] = useState(false);
+
 	// redux
 	const dispatch = useDispatch();
 
 	const darkMode = useSelector(selectTheme);
-	const isModalOpen = useSelector(seletIsModalOpen);
-	const todoData = useSelector(seletModal);
+	const isModalOpen = useSelector(selectIsModalOpen);
+	const todoData = useSelector(selectModal);
 
 	// state
 	const [editedTodo, setEditedTodo] = useState(todoData.bodyText);
@@ -38,10 +43,17 @@ const Modal = ({ completeTodo, data, editTodo, setEditTodo, todoId }) => {
 	const submitEditedTodo = (e) => {
 		e.preventDefault();
 
+		if (editedTodo === todoData.bodyText) {
+			setEditTodo(false);
+			return;
+		}
+
 		const docRef = doc(colRef, todoData?.todoId);
 
 		updateDoc(docRef, {
 			todo: editedTodo,
+		}).then(() => {
+			toast.success('Todo Changed');
 		});
 
 		dispatch(closeModalRedux());
@@ -65,94 +77,116 @@ const Modal = ({ completeTodo, data, editTodo, setEditTodo, todoId }) => {
 		updateDoc(docRef, {
 			isDone: todoData?.completeStatus ? false : true,
 		});
-
-		// dispatch(closeModalRedux());
 	};
 
 	return (
-		// modal
-		<div
-			className={`${styles.modal} ${darkMode && styles['dark-modal']} ${
-				isModalOpen ? styles.show__modal : styles.hide__modal
-			} `}
-		>
-			{/* header */}
-			<div className={styles.header}>
-				{/* complete status */}
-				<h1 className={styles.status}>
-					{todoData?.completeStatus ? 'Done' : 'Not Done'}
-				</h1>
-
-				{/* complete status border */}
-				<p
-					className={` ${styles.statusBorder} ${
-						todoData?.completeStatus
-							? styles.CompletedBorder
-							: styles.NotCompletedBorder
-					}`}
-				></p>
-
-				{/* close button */}
-				<h1 className={styles.closeBtn} onClick={closeModal}>
-					X
-				</h1>
-
-				{/* body */}
-				<div className={styles.body}>
-					{/* text */}
-					{editTodo ? (
-						<form onSubmit={submitEditedTodo}>
-							<input
-								className={styles.text}
-								value={editedTodo}
-								onChange={(e) => setEditedTodo(e.target.value)}
-							/>
-						</form>
-					) : (
-						<input disabled className={styles.text} value={todoData.bodyText} />
-					)}
-				</div>
-
-				{/* edit icon */}
+		<>
+			<Fade>
+				{/* modal */}
 				<div
-					className={`${styles.editIcon} ${editTodo && styles.editIconActive}`}
+					className={`${styles.modal} ${darkMode && styles['dark-modal']} ${
+						isModalOpen ? styles.show__modal : styles.hide__modal
+					} `}
 				>
-					<EditIcon style={{ fontSize: '25px' }} onClick={editTodoFunction} />
+					{/* header */}
+					<div className={styles.header}>
+						{/* complete status */}
+						<h1 className={styles.status}>
+							{todoData?.completeStatus ? 'Done' : 'Not Done'}
+
+							{/* complete status border */}
+							<p
+								className={` ${styles.statusBorder} ${
+									todoData?.completeStatus
+										? styles.CompletedBorder
+										: styles.NotCompletedBorder
+								}`}
+							></p>
+						</h1>
+						{/* close button */}
+						<h1 className={styles.closeBtn} onClick={closeModal}>
+							X
+						</h1>
+					</div>
+
+					{/* edit icon */}
+					<div
+						className={`${styles.editIcon} ${
+							editTodo && styles.editIconActive
+						}`}
+					>
+						<EditIcon onClick={editTodoFunction} />
+					</div>
+
+					{/* body */}
+					<div className={styles.body}>
+						{/* text */}
+						{editTodo ? (
+							<form
+								onSubmit={submitEditedTodo}
+								className={styles.textContainer}
+							>
+								<textarea
+									autoFocus
+									className={styles.text}
+									value={editedTodo}
+									onChange={(e) => setEditedTodo(e.target.value)}
+								/>
+							</form>
+						) : (
+							<div onClick={editTodoFunction} className={styles.textContainer}>
+								<textarea
+									disabled
+									className={styles.text}
+									value={todoData.bodyText}
+								/>
+							</div>
+						)}
+					</div>
+
+					{/* footer */}
+					<div className={styles.footer}>
+						{/* buttons */}
+
+						{editTodo ? (
+							// edit button
+							<button
+								className={`${styles.submitBtn} ${styles.btn}`}
+								onClick={submitEditedTodo}
+							>
+								Submit
+							</button>
+						) : (
+							//  complete button
+							<button
+								className={`${styles.completeBtn} ${styles.btn}`}
+								onClick={completedTodoOnModal}
+							>
+								{!todoData?.completeStatus ? 'Complete' : 'Incomplete'}
+							</button>
+						)}
+
+						{editTodo ? (
+							// cancel button
+							<button
+								className={`${styles.cancelBtn} ${styles.btn}`}
+								onClick={() => setEditTodo(false)}
+							>
+								cancel
+							</button>
+						) : (
+							// delete button
+							<button
+								className={`${styles.deleteBtn} ${styles.btn}`}
+								onClick={deleteTodoOnModal}
+							>
+								Delete
+							</button>
+						)}
+					</div>
 				</div>
-			</div>
-
-			{/* footer */}
-
-			<div className={styles.footer}>
-				{/* buttons */}
-
-				{editTodo ? (
-					// edit button
-					<button
-						className={`${styles.submitBtn} ${styles.btn}`}
-						onClick={submitEditedTodo}
-					>
-						Submit
-					</button>
-				) : (
-					//  complete button
-					<button
-						className={`${styles.completeBtn} ${styles.btn}`}
-						onClick={completedTodoOnModal}
-					>
-						{!todoData?.completeStatus ? 'Complete' : 'Incomplete'}
-					</button>
-				)}
-
-				{/* delete button */}
-				<button
-					className={`${styles.deleteBtn} ${styles.btn}`}
-					onClick={deleteTodoOnModal}
-				>
-					Delete
-				</button>
-			</div>
-		</div>
+			</Fade>
+		</>
 	);
 };
 export default Modal;

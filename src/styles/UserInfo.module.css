@@ -9,12 +9,24 @@
 /* account icon */
 
 .accountIconPhoto {
-	height: 40px;
+	height: 30px;
 	border-radius: 50%;
+	margin-top: 2px;
 }
 
 .accountIcon {
-	font-size: 40px !important;
+	font-size: 30px !important;
+	margin-top: 2px;
+}
+
+@media (min-width: 640px) {
+	.accountIconPhoto {
+		height: 40px;
+	}
+
+	.accountIcon {
+		font-size: 40px !important;
+	}
 }
 
 /* container */
@@ -23,13 +35,12 @@
 	position: absolute;
 	top: 50px;
 	right: 0;
-	display: flex;
 	flex-direction: column;
 	align-items: left;
 	border-radius: 7px;
 	display: none;
 	z-index: 9999;
-	background-color: #fefefe;
+	background-color: #f4f4f4;
 }
 
 .userInfo:hover .container,
@@ -38,7 +49,7 @@
 }
 
 .dark-userInfo > .container {
-	background-color: #222836;
+	background-color: #1b1f2a;
 }
 
 .container p {
@@ -68,12 +79,12 @@
 }
 
 .container > p:hover {
-	background-color: #f4f4f4;
+	background-color: #fefefe;
 	color: #3d62ba;
 }
 
 .dark-userInfo > .container > p:hover {
-	background-color: #1b1f2a;
+	background-color: #222836;
 	color: #3d62ba;
 }
 

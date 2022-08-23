@@ -5,7 +5,7 @@
 	align-items: center;
 	justify-content: space-evenly;
 	width: 100%;
-	height: 70px;
+	height: 40px;
 	border-radius: 7px;
 	background-color: white;
 }
@@ -17,7 +17,7 @@
 .todosSort > p {
 	cursor: pointer;
 	color: #51536c;
-	font-size: 20px;
+	font-size: 14px;
 	font-weight: 600;
 }
 
@@ -26,15 +26,27 @@
 	color: #3d62ba !important;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 640px) {
 	.todosSort {
-		gap: 20px;
+		height: 50px;
+	}
+
+	.todosSort > p {
+		font-size: 16px;
 	}
 }
 
 @media (min-width: 1024px) {
+	.todosSort {
+		height: 70px;
+	}
+
 	.todosSort > p {
 		font-size: 16px;
+	}
+
+	.todosSort {
+		gap: 20px;
 	}
 }
 

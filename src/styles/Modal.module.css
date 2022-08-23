@@ -1,15 +1,16 @@
 /* modal */
 
 .modal {
-	position: fixed;
-	width: 80vw;
-	height: 81vh;
-	top: 10%;
-	left: 7%;
+	position: fixed !important;
+	height: 73%;
+	width: 80%;
+	top: 50% !important;
+	left: 50% !important;
+	transform: translate(-50%, -50%) !important;
 	z-index: 999;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+	gap: 20px;
 	padding: 20px;
 	border-radius: 7px;
 	background-color: white;
@@ -18,9 +19,8 @@
 
 @media (min-width: 1024px) {
 	.modal {
-		width: 50vw;
-		top: 10%;
-		left: 25%;
+		height: 85%;
+		width: 50%;
 	}
 }
 
@@ -32,13 +32,8 @@
 /* header */
 
 .header {
-	display: grid;
+	display: flex;
 	justify-content: space-between;
-	grid-template-columns: 1fr 1fr;
-	grid-template-rows: 100px 550px;
-	grid-template-areas:
-		'status closeBtn'
-		'body body';
 }
 
 .header * {
@@ -48,16 +43,17 @@
 /* complete status */
 
 .status {
-	grid-area: status;
+	font-size: 16px;
+	position: relative;
 }
 
 /* complete status border */
 
 .statusBorder {
 	position: absolute;
-	top: 29px;
-	left: 12px;
-	height: 27px;
+	top: 4.5px;
+	left: -9px;
+	height: 15px;
 	border-top-left-radius: 5px;
 	border-bottom-left-radius: 5px;
 }
@@ -73,16 +69,15 @@
 /* close button */
 
 .closeBtn {
-	grid-area: closeBtn;
 	justify-self: end;
 	cursor: pointer;
 	border-radius: 50%;
-	width: 50px;
-	height: 50px;
+	width: 25px;
+	height: 25px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-size: 25px;
+	font-size: 15px;
 	transition: background-color 250ms ease-in-out;
 	color: black;
 }
@@ -103,45 +98,113 @@
 }
 
 /* body */
-
 .body {
-	grid-area: body;
-	overflow: scroll;
-	padding: 0 30px;
 	position: relative;
-}
-
-/* text */
-
-.text {
-	font-size: 25px;
-	overflow: scroll;
-	overflow-wrap: break-word;
+	flex: 1;
 	width: 100%;
 }
 
-.body input {
+/* text */
+.textContainer {
+	width: 95%;
+	height: 100%;
+}
+
+.text {
+	font-size: 18px;
+	width: 100%;
+	height: 100%;
+}
+
+.body textarea {
 	background: none;
 	border: none;
 	outline: none;
 	color: inherit;
+	resize: none;
+}
+
+/* textarea scroll bar */
+textarea::-webkit-scrollbar {
+	display: inline;
+}
+
+textarea::-webkit-scrollbar {
+	width: 6px !important;
+	background: transparent !important;
+}
+
+textarea::-webkit-scrollbar-thumb {
+	border-radius: 10px !important;
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1) !important;
+	background-color: gray !important;
 }
 
 /* edit icon */
 
 .editIcon {
-	position: absolute;
-	top: 85px;
-	right: 25px;
 	cursor: pointer;
-	width: 40px;
-	height: 40px;
-	color: black;
+	width: 25px;
+	height: 25px;
 	border-radius: 50%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	opacity: 0;
+	justify-self: end;
+	align-self: flex-end;
+	opacity: 1;
+	color: black;
+}
+
+.editIcon > * {
+	font-size: 15px !important;
+}
+
+@media (min-width: 1024px) {
+	.status {
+		font-size: 25px;
+	}
+
+	.statusBorder {
+		top: 6px;
+		height: 23px;
+		border-top-left-radius: 5px;
+		border-bottom-left-radius: 5px;
+	}
+
+	.closeBtn {
+		width: 35px;
+		height: 35px;
+		font-size: 25px;
+	}
+
+	.editIcon {
+		width: 35px;
+		height: 35px;
+		opacity: 0;
+	}
+
+	.editIcon > * {
+		font-size: 25px !important;
+	}
+
+	.modal:hover > .editIcon {
+		opacity: 1 !important;
+	}
+
+	.body {
+		padding: 0 30px;
+	}
+
+	.textContainer {
+		width: 90%;
+	}
+
+	.text {
+		font-size: 25px;
+		width: 100%;
+		height: 100%;
+	}
 }
 
 .dark-modal .editIcon {
@@ -149,35 +212,35 @@
 }
 
 .editIcon:hover {
-	background-color: #3d62ba;
+	background-color: rgb(2, 103, 2);
+	color: white;
 }
 
 .editIconActive {
 	background-color: green;
 	opacity: 1;
-}
-
-.header:hover .editIcon {
-	opacity: 1 !important;
+	color: white;
 }
 
 /* footer */
 
 .footer {
 	display: flex;
+	flex-direction: column;
 	align-items: center;
-	justify-content: space-between;
-	gap: 20px;
+	justify-content: space-around;
+	justify-self: flex-end;
+	gap: 30px;
+	padding-top: 20px;
 }
 
 /* buttons */
-
 .btn {
 	height: 40px;
-	width: 400px;
+	width: 90%;
 	cursor: pointer;
 	font-weight: 600;
-	font-size: 20px;
+	font-size: 18px;
 	border-radius: 7px;
 	display: flex;
 	align-items: center;
@@ -187,6 +250,27 @@
 	border: 1px solid #dcdbdb;
 	color: black;
 	outline: none;
+}
+
+.todosContainer {
+	height: auto;
+	max-height: 38vh;
+	overflow: scroll;
+	border-radius: 7px;
+	z-index: 10 !important;
+}
+
+@media (min-width: 640px) {
+	.footer {
+		flex-direction: row;
+		padding-top: 40px;
+	}
+
+	.btn {
+		height: 40px;
+		width: 400px;
+		font-size: 20px;
+	}
 }
 
 .dark-modal .btn {
@@ -217,6 +301,17 @@
 
 .deleteBtn:hover {
 	background-color: rgb(138, 5, 5);
+	color: white;
+}
+
+/* cancel button */
+
+.cancelBtn {
+	background-color: rgb(138, 5, 5) !important;
+	color: white;
+}
+.cancelBtn:hover {
+	background-color: rgb(115, 5, 5) !important;
 	color: white;
 }
 
